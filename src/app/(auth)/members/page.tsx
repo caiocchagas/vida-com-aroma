@@ -17,13 +17,17 @@ export default async function MembersPage({
     // Verifica no banco se o usuário realmente pagou
     const user = await prisma.user.findUnique({
         where: { email },
-        select: { hasPaid: true, name: true, focusArea: true },
+        select: { hasPaid: true, name: true, focusArea: true, interest: true, safety: true },
     });
 
     if (!user || !user.hasPaid) {
         // Se não existir ou não tiver pago, redireciona para o Quiz
         redirect("/");
     }
+
+    const showIncense = user.interest !== "Apenas Óleos Essenciais";
+    const hasPets = user.safety && user.safety.includes("Pets");
+    const hasKids = user.safety && user.safety.includes("Crianças");
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 md:p-8 text-stone-800 font-sans">
@@ -54,14 +58,28 @@ export default async function MembersPage({
                     </h2>
 
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="rounded-xl bg-amber-50 p-6 border border-amber-100">
-                            <h3 className="font-bold text-amber-900 mb-3 text-lg">Para quem tem Pets e Crianças</h3>
-                            <ul className="space-y-3 text-amber-800">
-                                <li className="flex items-start gap-2"><span>✅</span> <span>Mantenha a porta do ambiente <strong>sempre aberta</strong>. Animais e crianças precisam poder sair se o cheiro ficar forte.</span></li>
-                                <li className="flex items-start gap-2"><span>❌</span> <span>Nunca aplique a gota pura diretamente na pele ou no pelo do animal.</span></li>
-                                <li className="flex items-start gap-2"><span>❌</span> <span>Óleo de Melaleuca é altamente tóxico se ingerido por gatos. Use apenas no difusor.</span></li>
-                            </ul>
-                        </div>
+                        {(hasPets || hasKids) && (
+                            <div className="rounded-xl bg-amber-50 p-6 border border-amber-100">
+                                <h3 className="font-bold text-amber-900 mb-3 text-lg">
+                                    Atenção Específica para {hasPets && hasKids ? "Pets e Crianças" : hasPets ? "seus Pets" : "suas Crianças"}
+                                </h3>
+                                <ul className="space-y-3 text-amber-800">
+                                    <li className="flex items-start gap-2"><span>✅</span> <span>Mantenha a porta do ambiente <strong>sempre aberta</strong>. Animais e crianças precisam poder sair se o cheiro ficar forte.</span></li>
+                                    <li className="flex items-start gap-2"><span>❌</span> <span>Nunca aplique a gota pura diretamente na pele ou no pelo do animal.</span></li>
+                                    {hasPets && <li className="flex items-start gap-2"><span>❌</span> <span>Óleo de Melaleuca é altamente tóxico se ingerido por gatos. Use apenas no difusor longe do alcance.</span></li>}
+                                    {hasKids && <li className="flex items-start gap-2"><span>⚠️</span> <span>Para crianças menores de 3 anos, a diluição de óleos deve ser de no máximo 0.5% (1 gota para cada 10ml de óleo carreador).</span></li>}
+                                </ul>
+                            </div>
+                        )}
+
+                        {!hasPets && !hasKids && (
+                            <div className="rounded-xl bg-emerald-50 p-6 border border-emerald-100">
+                                <h3 className="font-bold text-emerald-900 mb-3 text-lg">Ambiente Seguro detectado!</h3>
+                                <p className="text-emerald-800 mb-3">
+                                    Como você não marcou restrições com pets ou crianças, você tem total liberdade para usar os difusores ultrassônicos em ambientes fechados para potencializar a absorção.
+                                </p>
+                            </div>
+                        )}
 
                         <div className="rounded-xl bg-stone-50 p-6 border border-stone-100">
                             <h3 className="font-bold text-stone-900 mb-3 text-lg">Diluição Correta (Uso Tópico)</h3>
@@ -129,6 +147,40 @@ export default async function MembersPage({
                     </div>
                 </div>
 
+                {/* Módulo Incensos (Condicional) */}
+                {showIncense && (
+                    <div className="rounded-2xl bg-indigo-50 p-8 shadow-sm border border-indigo-100">
+                        <h2 className="mb-6 text-2xl font-bold text-indigo-900 border-b border-indigo-200 pb-4 flex items-center gap-2">
+                            <span className="text-3xl">✨</span> Bônus: O Poder Oculto dos Incensos
+                        </h2>
+
+                        <p className="text-indigo-800 mb-6 text-lg">
+                            Como você demonstrou interesse em incensos, preparamos este material avançado. Incensos naturais não apenas perfumam, o elemento do <strong className="font-black">Fogo</strong> e a queima de resinas sagradas limpam energias pesadas e miasmas (memórias densas) do ambiente.
+                        </p>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm">
+                                <h3 className="font-bold text-indigo-900 text-lg mb-3">Palo Santo (Madeira Sagrada)</h3>
+                                <p className="text-stone-600 mb-2"><strong>Ação:</strong> Limpeza profunda e elevação espiritual.</p>
+                                <p className="text-stone-600 text-sm">Ótimo para queimar no fim da tarde ou após discussões pesadas na casa. Diferente de incensos comuns, um bastão de Palo Santo apaga sozinho e dura semanas.</p>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm">
+                                <h3 className="font-bold text-indigo-900 text-lg mb-3">Incenso de Sândalo</h3>
+                                <p className="text-stone-600 mb-2"><strong>Ação:</strong> Introspecção, Meditação e Calma.</p>
+                                <p className="text-stone-600 text-sm">Sândalo é usado há milênios em templos indianos. É o parceiro perfeito para acender 10 minutos antes de tentar dormir ou praticar yoga.</p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 bg-indigo-900 text-indigo-100 p-6 rounded-xl">
+                            <h4 className="font-bold text-white mb-2 flex items-center gap-2">⚠️ Alerta de Saúde</h4>
+                            <p className="text-sm opacity-90">
+                                90% dos incensos baratos de prateleira são feitos com carvão tóxico e essências de petróleo (sintéticas). Queimar isso causa dor de cabeça e alergias. Compre <strong className="text-white">apenas</strong> incensos de resina orgânica ou formato massala.
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {/* 3. Arsenal (Links de Afiliados) */}
                 <div className="rounded-2xl bg-orange-50 p-8 shadow-sm border border-orange-100">
                     <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-orange-200 pb-4">
@@ -150,6 +202,11 @@ export default async function MembersPage({
                             { nome: "Óleo Essencial de Alecrim (Via Aroma)", desc: "10ml - Marca Original", link: "https://shopee.com.br" },
                             { nome: "Óleo Carreador de Semente de Uva / Coco", desc: "100ml - Puro para massagem", link: "https://shopee.com.br" },
                             { nome: "Difusor Ultrassônico Básico", desc: "300ml - Com cromoterapia (led)", link: "https://shopee.com.br" },
+                            ...(showIncense ? [
+                                { nome: "Incensário em Cerâmica", desc: "Base para queima com efeito cascata", link: "https://shopee.com.br" },
+                                { nome: "Palo Santo Original do Peru", desc: "Caixa com 5 bastões puros", link: "https://shopee.com.br" },
+                                { nome: "Incenso Massala Sândalo (Goloka)", desc: "Caixa mista premium - Sem carvão", link: "https://shopee.com.br" },
+                            ] : [])
                         ].map((item, index) => (
                             <a
                                 key={index}

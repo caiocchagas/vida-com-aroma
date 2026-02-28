@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 type QuizAnswers = {
   focusArea: string;
   preferences: string;
-  safety: string;
+  safety: string[];
+  interest: string;
 };
 
 export default function QuizPage() {
@@ -16,16 +17,37 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<QuizAnswers>({
     focusArea: "",
     preferences: "",
-    safety: "",
+    safety: [], // Agora é um array
+    interest: "",
   });
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Manipulador para avançar etapas
-  const handleAnswer = (field: keyof QuizAnswers, value: string) => {
+  // Manipulador para resposta única (avança automaticamente)
+  const handleSingleAnswer = (field: keyof QuizAnswers, value: string) => {
     setAnswers((prev) => ({ ...prev, [field]: value }));
-    if (step < 3) setStep(step + 1);
-    else setStep(4); // Vai para captura de e-mail ao final
+    nextStep();
+  };
+
+  // Manipulador para respostas múltiplas (array)
+  const toggleMultiAnswer = (field: keyof QuizAnswers, value: string) => {
+    setAnswers((prev) => {
+      const currentArray = (prev[field] as string[]) || [];
+      const hasValue = currentArray.includes(value);
+
+      return {
+        ...prev,
+        [field]: hasValue
+          ? currentArray.filter(i => i !== value)
+          : [...currentArray, value]
+      };
+    });
+  };
+
+  // Botão de continuar para avançar na múltipla escolha
+  const nextStep = () => {
+    if (step < 4) setStep(step + 1);
+    else setStep(5);
   };
 
   // Submissão do Lead
@@ -61,13 +83,13 @@ export default function QuizPage() {
         {/* Progresso UI */}
         <div className="mb-6 flex items-center justify-between text-sm font-medium text-stone-400">
           <span>Aroma Match</span>
-          <span>Passo {step > 3 ? 3 : step} de 3</span>
+          <span>Passo {step > 4 ? 4 : step} de 4</span>
         </div>
-        
+
         <div className="mb-8 h-2 w-full rounded-full bg-stone-100">
-          <div 
-            className="h-2 rounded-full bg-emerald-500 transition-all duration-300" 
-            style={{ width: `${(step / 4) * 100}%` }}
+          <div
+            className="h-2 rounded-full bg-emerald-500 transition-all duration-300"
+            style={{ width: `${(step / 5) * 100}%` }}
           />
         </div>
 
@@ -77,13 +99,13 @@ export default function QuizPage() {
             <h1 className="mb-6 text-2xl font-bold">O que você mais deseja melhorar hoje?</h1>
             <div className="flex flex-col gap-3">
               {['Reduzir a Ansiedade', 'Melhorar o Foco', 'Ter um Sono Profundo'].map((opt) => (
-               <button 
-                 key={opt}
-                 onClick={() => handleAnswer("focusArea", opt)}
-                 className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
-               >
-                 {opt}
-               </button>
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("focusArea", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
               ))}
             </div>
           </div>
@@ -95,54 +117,90 @@ export default function QuizPage() {
             <h1 className="mb-6 text-2xl font-bold">Qual perfil aromático te atrai mais?</h1>
             <div className="flex flex-col gap-3">
               {['Amadeirado e Terroso', 'Floral e Doce', 'Cítrico e Refrescante'].map((opt) => (
-               <button 
-                 key={opt}
-                 onClick={() => handleAnswer("preferences", opt)}
-                 className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
-               >
-                 {opt}
-               </button>
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("preferences", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Pergunta 3 */}
+        {/* Pergunta 3 (Múltipla Escolha) */}
         {step === 3 && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Alguma restrição de segurança no seu ambiente?</h1>
+            <h1 className="mb-2 text-2xl font-bold">Alguma restrição de segurança no seu ambiente?</h1>
+            <p className="mb-6 text-stone-500 text-sm">Pode selecionar mais de uma opção.</p>
             <div className="flex flex-col gap-3">
-              {['Tenho Pets (Cães/Gatos)', 'Tenho Crianças pequenas', 'Nenhuma restrição especial'].map((opt) => (
-               <button 
-                 key={opt}
-                 onClick={() => handleAnswer("safety", opt)}
-                 className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
-               >
-                 {opt}
-               </button>
+              {['Tenho Pets (Cães/Gatos)', 'Tenho Crianças pequenas', 'Nenhuma restrição especial'].map((opt) => {
+                const isSelected = answers.safety.includes(opt);
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => toggleMultiAnswer("safety", opt)}
+                    className={`rounded-xl border p-4 text-left font-medium transition flex items-center justify-between ${isSelected
+                      ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                      : "border-stone-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-stone-700"
+                      }`}
+                  >
+                    {opt}
+                    <div className={`h-5 w-5 rounded border flex items-center justify-center ${isSelected ? "bg-emerald-500 border-emerald-500" : "border-stone-300"
+                      }`}>
+                      {isSelected && <span className="text-white text-xs">✓</span>}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              onClick={nextStep}
+              disabled={answers.safety.length === 0}
+              className="mt-6 w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50 transition"
+            >
+              Continuar &rarr;
+            </button>
+          </div>
+        )}
+
+        {/* Pergunta 4 */}
+        {step === 4 && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className="mb-6 text-2xl font-bold">Você tem interesse no uso de Incensos Naturais?</h1>
+            <div className="flex flex-col gap-3">
+              {['Sim, adoro incensos em casa', 'Apenas Óleos Essenciais', 'Gostaria de aprender sobre os dois'].map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("interest", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
               ))}
             </div>
           </div>
         )}
 
         {/* Captura de Lead */}
-        {step === 4 && (
+        {step === 5 && (
           <div className="animate-in fade-in zoom-in-95 duration-500 text-center">
             <h1 className="mb-2 text-3xl font-bold text-emerald-800">Seu Ritual está pronto!</h1>
             <p className="mb-6 text-stone-600">
               Analisamos seu perfil. Digite seu melhor e-mail para descobrir a combinação perfeita de óleos essenciais para você.
             </p>
             <form onSubmit={handleSubmitLead} className="flex flex-col gap-4">
-              <input 
-                type="email" 
+              <input
+                type="email"
                 required
                 placeholder="Seu melhor e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl border border-stone-300 p-4 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isLoading}
                 className="w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-lg hover:bg-emerald-700 disabled:opacity-70 transition"
               >

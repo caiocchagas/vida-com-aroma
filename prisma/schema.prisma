@@ -15,6 +15,7 @@ model User {
   focusArea     String?
   preferences   String?
   safety        String?
+  interest      String?
   
   hasPaid       Boolean  @default(false)
   createdAt     DateTime @default(now())

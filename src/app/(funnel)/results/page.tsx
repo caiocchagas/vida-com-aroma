@@ -66,10 +66,10 @@ function ResultsContent() {
 
                     <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-6 md:p-8 mt-8 text-left">
                         <h2 className="mb-4 text-xl font-bold text-emerald-900 flex items-center gap-2">
-                            <span className="text-2xl">🌿</span> O Seu Ritual Ideal: A Tríade do Equilíbrio
+                            <span className="text-2xl">🌿</span> O Seu Ritual Ideal: A Tríade + O Poder do Incenso
                         </h2>
                         <p className="text-stone-700 mb-6">
-                            Baseado nas suas respostas, a combinação exata de <strong>Lavanda (calmante nervoso)</strong>, <strong>Alecrim (estimulante cognitivo)</strong> e <strong>Melaleuca (purificador ambiental)</strong> é o atalho para resultados em até 7 dias.
+                            Baseado nas suas respostas, a combinação exata de <strong>Lavanda (calmante nervoso)</strong>, <strong>Alecrim (estimulante cognitivo)</strong> e <strong>Incensos Orgânicos (purificação ambiental)</strong> é o atalho para resultados em até 7 dias.
                         </p>
 
                         <div className="space-y-4">
