@@ -19,6 +19,7 @@ export async function POST(request: Request) {
         }
 
         // 2. Cria a transação mockada e atualiza o status de pagamento
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await prisma.$transaction(async (tx: any) => {
             await tx.transaction.create({
                 data: {

@@ -103,7 +103,7 @@ export default async function MembersPage({
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold text-stone-800 mb-2">Para: Foco, Memória e Energia</h3>
-                                <p className="text-stone-600 mb-4">Estimulante cognitivo poderoso. Estudos mostram que inalar alecrim melhora a memorização em até 75% e tira o "nevoeiro mental" da exaustão.</p>
+                                <p className="text-stone-600 mb-4">Estimulante cognitivo poderoso. Estudos mostram que inalar alecrim melhora a memorização em até 75% e tira o &quot;nevoeiro mental&quot; da exaustão.</p>
                                 <div className="bg-stone-50 p-3 rounded-lg text-sm text-stone-700 border border-stone-200">
                                     <strong>Ritual Matinal:</strong> Inale profundamente o frasco por 3 respirações lentas ao acordar ou antes de uma tarefa difícil no trabalho.
                                 </div>

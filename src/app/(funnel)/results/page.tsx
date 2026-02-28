@@ -11,6 +11,7 @@ function ResultsContent() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
     }, []);
 
@@ -102,7 +103,7 @@ function ResultsContent() {
                     <h3 className="text-2xl font-bold text-stone-800 mb-6">Pessoas reais. Resultados reais.</h3>
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="bg-white p-6 rounded-xl shadow-sm text-left">
-                            <p className="text-stone-600 italic mb-4">"Eu testei o difusor com a proporção sugerida para foco no trabalho. Minha produtividade dobrou nesta semana e não me sinto mais exausta às 18h."</p>
+                            <p className="text-stone-600 italic mb-4">&quot;Eu testei o difusor com a proporção sugerida para foco no trabalho. Minha produtividade dobrou nesta semana e não me sinto mais exausta às 18h.&quot;</p>
                             <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 bg-orange-200 rounded-full flex items-center justify-center font-bold text-orange-800">M</div>
                                 <div>
@@ -112,7 +113,7 @@ function ResultsContent() {
                             </div>
                         </div>
                         <div className="bg-white p-6 rounded-xl shadow-sm text-left">
-                            <p className="text-stone-600 italic mb-4">"Comprei o óleo na Shopee como o guia indicou e segui a diluição noturna para ansiedade. Fazia meses que eu não dormia 8 horas seguidas."</p>
+                            <p className="text-stone-600 italic mb-4">&quot;Comprei o óleo na Shopee como o guia indicou e segui a diluição noturna para ansiedade. Fazia meses que eu não dormia 8 horas seguidas.&quot;</p>
                             <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 bg-emerald-200 rounded-full flex items-center justify-center font-bold text-emerald-800">R</div>
                                 <div>
@@ -131,7 +132,7 @@ function ResultsContent() {
                     </div>
 
                     <h3 className="text-2xl md:text-3xl font-extrabold mb-4">
-                        Desbloqueie o "Guia do Ritual Completo" Agora
+                        Desbloqueie o &quot;Guia do Ritual Completo&quot; Agora
                     </h3>
                     <p className="text-emerald-100 mb-8 max-w-xl mx-auto">
                         Você terá acesso imediato à Área de Membros com o passo-a-passo exato, dosagens corretas, dicas de segurança e os links secretos (baratos e originais) para comprar seus óleos hoje.
