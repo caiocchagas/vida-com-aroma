@@ -9,6 +9,10 @@ type QuizAnswers = {
   preferences: string;
   safety: string[];
   interest: string;
+  stressLevel: string;
+  physicalSymptoms: string[];
+  experience: string;
+  scentSensitivity: string;
 };
 
 export default function QuizPage() {
@@ -17,8 +21,12 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<QuizAnswers>({
     focusArea: "",
     preferences: "",
-    safety: [], // Agora é um array
+    safety: [],
     interest: "",
+    stressLevel: "",
+    physicalSymptoms: [],
+    experience: "",
+    scentSensitivity: "",
   });
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,8 +54,8 @@ export default function QuizPage() {
 
   // Botão de continuar para avançar na múltipla escolha
   const nextStep = () => {
-    if (step < 4) setStep(step + 1);
-    else setStep(5);
+    if (step < 8) setStep(step + 1);
+    else setStep(9);
   };
 
   // Submissão do Lead
@@ -83,13 +91,13 @@ export default function QuizPage() {
         {/* Progresso UI */}
         <div className="mb-6 flex items-center justify-between text-sm font-medium text-stone-400">
           <span>Aroma Match</span>
-          <span>Passo {step > 4 ? 4 : step} de 4</span>
+          <span>Passo {step > 8 ? 8 : step} de 8</span>
         </div>
 
         <div className="mb-8 h-2 w-full rounded-full bg-stone-100">
           <div
             className="h-2 rounded-full bg-emerald-500 transition-all duration-300"
-            style={{ width: `${(step / 5) * 100}%` }}
+            style={{ width: `${(step / 9) * 100}%` }}
           />
         </div>
 
@@ -183,8 +191,98 @@ export default function QuizPage() {
           </div>
         )}
 
-        {/* Captura de Lead */}
+        {/* Pergunta 5 */}
         {step === 5 && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className="mb-6 text-2xl font-bold">Como você classificaria seu nível de estresse atual?</h1>
+            <div className="flex flex-col gap-3">
+              {['Baixo, apenas rotineiro', 'Moderado, me sinto cansado(a) no fim do dia', 'Alto, sinto que estou no limite'].map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("stressLevel", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Pergunta 6 (Múltipla Escolha) */}
+        {step === 6 && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className="mb-2 text-2xl font-bold">Você sente reflexos físicos do cansaço no dia a dia?</h1>
+            <p className="mb-6 text-stone-500 text-sm">Pode selecionar mais de uma opção.</p>
+            <div className="flex flex-col gap-3">
+              {['Dores de cabeça tensionais', 'Dores no estômago / intestino', 'Tensão muscular nos ombros e pescoço', 'Nenhum sintoma físico forte'].map((opt) => {
+                const isSelected = answers.physicalSymptoms.includes(opt);
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => toggleMultiAnswer("physicalSymptoms", opt)}
+                    className={`rounded-xl border p-4 text-left font-medium transition flex items-center justify-between ${isSelected
+                      ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                      : "border-stone-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-stone-700"
+                      }`}
+                  >
+                    {opt}
+                    <div className={`h-5 w-5 rounded border flex items-center justify-center ${isSelected ? "bg-emerald-500 border-emerald-500" : "border-stone-300"
+                      }`}>
+                      {isSelected && <span className="text-white text-xs">✓</span>}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              onClick={nextStep}
+              disabled={answers.physicalSymptoms.length === 0}
+              className="mt-6 w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50 transition"
+            >
+              Continuar &rarr;
+            </button>
+          </div>
+        )}
+
+        {/* Pergunta 7 */}
+        {step === 7 && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className="mb-6 text-2xl font-bold">Você já usou aromaterapia de alguma forma antes?</h1>
+            <div className="flex flex-col gap-3">
+              {['Sim, uso com frequência', 'Apenas esporadicamente (umas gotinhas na fronha, etc)', 'Não, estou começando do zero'].map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("experience", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Pergunta 8 */}
+        {step === 8 && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className="mb-6 text-2xl font-bold">Você tem sensibilidade a cheiros muito doces ou marcantes?</h1>
+            <div className="flex flex-col gap-3">
+              {['Sim, me dão dor de cabeça (prefiro cítricos/suaves)', 'Um pouco, dependo do dia', 'Não, gosto de aromas presentes e intensos'].map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleSingleAnswer("scentSensitivity", opt)}
+                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Captura de Lead */}
+        {step === 9 && (
           <div className="animate-in fade-in zoom-in-95 duration-500 text-center">
             <h1 className="mb-2 text-3xl font-bold text-emerald-800">Seu Ritual está pronto!</h1>
             <p className="mb-6 text-stone-600">

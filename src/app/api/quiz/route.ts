@@ -6,15 +6,26 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { email, focusArea, preferences, safety, interest } = body;
+        const {
+            email,
+            focusArea,
+            preferences,
+            safety,
+            interest,
+            stressLevel,
+            physicalSymptoms,
+            experience,
+            scentSensitivity
+        } = body;
 
         if (!email) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
-        // Como safety agora é um array de múltipla escolha, vamos converter para string
+        // Como safety e physicalSymptoms agora são arrays de múltipla escolha, vamos converter para string
         // para salvar na coluna genérica String do banco de dados de maneira fácil.
         const safetyString = Array.isArray(safety) ? JSON.stringify(safety) : safety;
+        const symptomsString = Array.isArray(physicalSymptoms) ? JSON.stringify(physicalSymptoms) : physicalSymptoms;
 
         // Tenta encontrar o usuário pelo email, ou cria um novo
         const user = await prisma.user.upsert({
@@ -24,6 +35,10 @@ export async function POST(request: NextRequest) {
                 preferences,
                 safety: safetyString,
                 interest,
+                stressLevel,
+                physicalSymptoms: symptomsString,
+                experience,
+                scentSensitivity
             },
             create: {
                 email,
@@ -31,6 +46,10 @@ export async function POST(request: NextRequest) {
                 preferences,
                 safety: safetyString,
                 interest,
+                stressLevel,
+                physicalSymptoms: symptomsString,
+                experience,
+                scentSensitivity
             },
         });
 

@@ -12,10 +12,15 @@ model User {
   email         String   @unique
   name          String?
   
-  focusArea     String?
-  preferences   String?
-  safety        String?
-  interest      String?
+  focusArea         String?
+  preferences       String?
+  safety            String?
+  interest          String?
+  
+  stressLevel       String?
+  physicalSymptoms  String?
+  experience        String?
+  scentSensitivity  String?
   
   hasPaid       Boolean  @default(false)
   createdAt     DateTime @default(now())
