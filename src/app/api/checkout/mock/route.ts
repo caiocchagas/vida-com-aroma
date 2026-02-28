@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         }
 
         // 2. Cria a transação mockada e atualiza o status de pagamento
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.transaction.create({
                 data: {
                     userId: user.id,
