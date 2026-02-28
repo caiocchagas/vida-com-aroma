@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
             });
         });
 
-        return NextResponse.json({ success: true, redirectUrl: `/members?email=${encodeURIComponent(email)}` }, { status: 200 });
+        return NextResponse.json({ success: true, redirectUrl: `/register?email=${encodeURIComponent(email)}` }, { status: 200 });
 
     } catch (error) {
         console.error('Mock Checkout Error:', error);

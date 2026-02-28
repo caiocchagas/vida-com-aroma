@@ -1,24 +1,23 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { getRecommendations } from "@/lib/recommendations";
 
 export const dynamic = "force-dynamic";
 
-export default async function MembersPage({
-    searchParams,
-}: {
-    searchParams: Promise<{ email?: string }>;
-}) {
-    const { email } = await searchParams;
+export default async function MembersPage() {
+    const session = await getServerSession(authOptions);
 
-    if (!email) {
-        redirect("/");
+    if (!session?.user?.email) {
+        redirect("/login");
     }
+
+    const userEmail = session.user.email;
 
     // Verifica no banco se o usuário realmente pagou
     const user = await prisma.user.findUnique({
-        where: { email },
+        where: { email: userEmail },
         select: {
             hasPaid: true,
             name: true,
@@ -33,9 +32,9 @@ export default async function MembersPage({
     });
 
     if (!user || !user.hasPaid) {
-        // Se não existir ou não tiver pago, redireciona para o Quiz
-        redirect("/");
+        redirect("/results");
     }
+
 
     const recs = getRecommendations(user);
     const { primaryOil, secondaryOil, environmentOil } = recs;
