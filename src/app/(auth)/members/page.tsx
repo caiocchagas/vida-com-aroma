@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 
+import { getRecommendations } from "@/lib/recommendations";
+
 export const dynamic = "force-dynamic";
 
 export default async function MembersPage({
@@ -17,7 +19,17 @@ export default async function MembersPage({
     // Verifica no banco se o usuário realmente pagou
     const user = await prisma.user.findUnique({
         where: { email },
-        select: { hasPaid: true, name: true, focusArea: true, interest: true, safety: true },
+        select: {
+            hasPaid: true,
+            name: true,
+            focusArea: true,
+            interest: true,
+            safety: true,
+            stressLevel: true,
+            physicalSymptoms: true,
+            experience: true,
+            scentSensitivity: true
+        },
     });
 
     if (!user || !user.hasPaid) {
@@ -25,9 +37,12 @@ export default async function MembersPage({
         redirect("/");
     }
 
-    const showIncense = user.interest !== "Apenas Óleos Essenciais";
-    const hasPets = user.safety && user.safety.includes("Pets");
-    const hasKids = user.safety && user.safety.includes("Crianças");
+    const recs = getRecommendations(user);
+    const { primaryOil, secondaryOil, environmentOil } = recs;
+
+    const showIncense = recs.showIncense;
+    const hasPets = recs.hasPets;
+    const hasKids = recs.hasKids;
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 md:p-8 text-stone-800 font-sans">
@@ -100,50 +115,25 @@ export default async function MembersPage({
                     </h2>
 
                     <div className="space-y-8">
-                        {/* Lavanda */}
-                        <div className="flex flex-col md:flex-row gap-6 items-start">
-                            <div className="bg-purple-100 text-purple-800 p-4 rounded-xl w-full md:w-1/3 flex-shrink-0 text-center font-bold text-xl border border-purple-200">
-                                🌿 Lavanda Francesa
-                                <span className="block mt-2 text-sm font-normal text-purple-600">(Lavandula angustifolia)</span>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-stone-800 mb-2">Para: Ansiedade e Insônia</h3>
-                                <p className="text-stone-600 mb-4">O regulador oficial do sistema nervoso. Ele reduz os batimentos cardíacos e abaixa os níveis de cortisol induzindo a um estado de calma profunda.</p>
-                                <div className="bg-stone-50 p-3 rounded-lg text-sm text-stone-700 border border-stone-200">
-                                    <strong>Ritual Noturno:</strong> Pingue 1 gota pura no canto do travesseiro 10 min antes de deitar ou coloque 4 gotas no difusor com água.
+                        {[
+                            { role: "Essencial Diário", oil: primaryOil },
+                            { role: "Suporte Específico", oil: secondaryOil },
+                            { role: "Tratamento de Ambiente", oil: environmentOil }
+                        ].map((item, idx) => (
+                            <div key={idx} className="flex flex-col md:flex-row gap-6 items-start">
+                                <div className={`${item.oil.colorClass} p-4 rounded-xl w-full md:w-1/3 flex-shrink-0 text-center font-bold text-xl border`}>
+                                    🌿 {item.oil.name}
+                                    <span className="block mt-2 text-sm font-normal opacity-80">({item.oil.botanicalName})</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-stone-800 mb-2">Para: {item.oil.benefit} <span className="text-sm font-normal text-stone-500">({item.role})</span></h3>
+                                    <p className="text-stone-600 mb-4">{item.oil.description}</p>
+                                    <div className="bg-stone-50 p-3 rounded-lg text-sm text-stone-700 border border-stone-200">
+                                        <strong>Aplicação:</strong> {item.oil.ritual}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Alecrim */}
-                        <div className="flex flex-col md:flex-row gap-6 items-start">
-                            <div className="bg-emerald-100 text-emerald-800 p-4 rounded-xl w-full md:w-1/3 flex-shrink-0 text-center font-bold text-xl border border-emerald-200">
-                                🌿 Alecrim
-                                <span className="block mt-2 text-sm font-normal text-emerald-600">(Rosmarinus officinalis)</span>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-stone-800 mb-2">Para: Foco, Memória e Energia</h3>
-                                <p className="text-stone-600 mb-4">Estimulante cognitivo poderoso. Estudos mostram que inalar alecrim melhora a memorização em até 75% e tira o &quot;nevoeiro mental&quot; da exaustão.</p>
-                                <div className="bg-stone-50 p-3 rounded-lg text-sm text-stone-700 border border-stone-200">
-                                    <strong>Ritual Matinal:</strong> Inale profundamente o frasco por 3 respirações lentas ao acordar ou antes de uma tarefa difícil no trabalho.
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Melaleuca */}
-                        <div className="flex flex-col md:flex-row gap-6 items-start">
-                            <div className="bg-teal-100 text-teal-800 p-4 rounded-xl w-full md:w-1/3 flex-shrink-0 text-center font-bold text-xl border border-teal-200">
-                                🌿 Melaleuca (Tea Tree)
-                                <span className="block mt-2 text-sm font-normal text-teal-600">(Melaleuca alternifolia)</span>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-stone-800 mb-2">Para: Imunidade e Purificação</h3>
-                                <p className="text-stone-600 mb-4">Antisséptico, antiviral e bactericida. Excelente para períodos onde a imunidade cai devido ao estresse prolongado.</p>
-                                <div className="bg-stone-50 p-3 rounded-lg text-sm text-stone-700 border border-stone-200">
-                                    <strong>Ritual de Limpeza:</strong> Coloque 3 gotas no difusor para purificar o ar do ambiente de trabalho se sentir que vai gripar.
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
 
@@ -198,10 +188,11 @@ export default async function MembersPage({
 
                     <div className="grid gap-4 md:grid-cols-2">
                         {[
-                            { nome: "Óleo Essencial de Lavanda Francesa (Via Aroma)", desc: "10ml - Marca Original", link: "https://shopee.com.br" },
-                            { nome: "Óleo Essencial de Alecrim (Via Aroma)", desc: "10ml - Marca Original", link: "https://shopee.com.br" },
-                            { nome: "Óleo Carreador de Semente de Uva / Coco", desc: "100ml - Puro para massagem", link: "https://shopee.com.br" },
-                            { nome: "Difusor Ultrassônico Básico", desc: "300ml - Com cromoterapia (led)", link: "https://shopee.com.br" },
+                            { nome: `Óleo de ${primaryOil.name}`, desc: "10ml - Marca Original Via Aroma", link: primaryOil.shopeeLink },
+                            { nome: `Óleo de ${secondaryOil.name}`, desc: "10ml - Marca Original Via Aroma", link: secondaryOil.shopeeLink },
+                            { nome: `Óleo de ${environmentOil.name}`, desc: "10ml - Marca Original Via Aroma", link: environmentOil.shopeeLink },
+                            { nome: "Óleo Carreador de Semente de Uva / Coco", desc: "100ml - Puro para massagem", link: "https://shopee.com.br/search?keyword=oleo%20carreador%20vegetal" },
+                            { nome: "Difusor Ultrassônico Básico", desc: "300ml - Com cromoterapia (led)", link: "https://shopee.com.br/search?keyword=difusor%20oleo%20essencial" },
                             ...(showIncense ? [
                                 { nome: "Incensário em Cerâmica", desc: "Base para queima com efeito cascata", link: "https://shopee.com.br" },
                                 { nome: "Palo Santo Original do Peru", desc: "Caixa com 5 bastões puros", link: "https://shopee.com.br" },

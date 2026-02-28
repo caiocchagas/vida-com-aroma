@@ -9,11 +9,21 @@ function ResultsContent() {
     const email = searchParams.get("email");
     const [mounted, setMounted] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [recommendations, setRecommendations] = useState<any>(null);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
-    }, []);
+        if (email) {
+            fetch(`/api/user?email=${encodeURIComponent(email)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.recommendations) {
+                        setRecommendations(data.recommendations);
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+    }, [email]);
 
     const handleMockCheckout = async () => {
         if (!email) {
@@ -58,18 +68,18 @@ function ResultsContent() {
                         Análise Concluída com Sucesso!
                     </span>
                     <h1 className="mb-6 text-3xl md:text-5xl font-extrabold text-stone-900 leading-tight">
-                        Descobrimos a Causa da Sua <br className="hidden md:block" /> Falta de Energia e Foco.
+                        Descobrimos a Causa da Sua <br className="hidden md:block" /> {recommendations ? recommendations.diagnosisTitle : "Falta de Energia e Foco"}.
                     </h1>
                     <p className="mb-6 text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
-                        Os dados do seu quiz mostram que você está enfrentando um esgotamento mental comum. A boa notícia? <strong>Não é culpa sua.</strong> O seu sistema límbico precisa de um reset, e a intervenção natural ideal para o seu caso já existe.
+                        Os dados do seu quiz revelam que sua condição atual precisa de atenção específica no sistema límbico. A boa notícia? <strong>Não é culpa sua e tem resolução.</strong> A intervenção aromaterápica exata para o seu caso já existe.
                     </p>
 
                     <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-6 md:p-8 mt-8 text-left">
                         <h2 className="mb-4 text-xl font-bold text-emerald-900 flex items-center gap-2">
-                            <span className="text-2xl">🌿</span> O Seu Ritual Ideal: A Tríade + O Poder do Incenso
+                            <span className="text-2xl">🌿</span> O Seu Ritual Ideal: A Tríade {recommendations?.showIncense ? "+ O Poder do Incenso" : "do Equilíbrio"}
                         </h2>
                         <p className="text-stone-700 mb-6">
-                            Baseado nas suas respostas, a combinação exata de <strong>Lavanda (calmante nervoso)</strong>, <strong>Alecrim (estimulante cognitivo)</strong> e <strong>Incensos Orgânicos (purificação ambiental)</strong> é o atalho para resultados em até 7 dias.
+                            Baseado nas suas respostas e preferências, a combinação exata de <strong>{recommendations?.primaryOil?.name || "Lavanda"} (essencial diário)</strong>, <strong>{recommendations?.secondaryOil?.name || "Alecrim"} (suporte)</strong> e <strong>{recommendations?.environmentOil?.name || "Melaleuca"} (ambiente)</strong> é o atalho que falta na sua rotina.
                         </p>
 
                         <div className="space-y-4">
