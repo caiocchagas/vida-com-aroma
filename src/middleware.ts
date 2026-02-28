@@ -19,6 +19,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    // Match /admin and all sub-paths EXCEPT /admin/login
-    matcher: ["/admin", "/admin/(?!login$).*"],
+    // Exclusion of /admin/login is handled inside the function above
+    matcher: ["/admin/:path*"],
 };
