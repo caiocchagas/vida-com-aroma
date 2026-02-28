@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Protect the /admin route with a simple secret token in the cookie
-    if (pathname.startsWith("/admin")) {
+    // Protect /admin but NOT /admin/login (which would cause infinite redirect loop)
+    if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
         const token = request.cookies.get("admin_token")?.value;
         const secret = process.env.ADMIN_SECRET;
 
-        if (!secret || token !== secret) {
-            // Redirect to login page if not authenticated
+        // Only block if ADMIN_SECRET is set and token doesn't match
+        if (secret && token !== secret) {
             const loginUrl = new URL("/admin/login", request.url);
             return NextResponse.redirect(loginUrl);
         }
@@ -19,5 +19,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/admin/:path*"],
+    // Match /admin and all sub-paths EXCEPT /admin/login
+    matcher: ["/admin", "/admin/(?!login$).*"],
 };
