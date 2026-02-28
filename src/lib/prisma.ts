@@ -1,14 +1,17 @@
 import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 const prismaClientSingleton = () => {
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = process.env.DATABASE_URL || "postgresql://dummy:dummy@localhost:5432/dummy";
 
-  if (!connectionString) {
-    console.warn("⚠️ DATABASE_URL is missing! Prisma will likely fail to connect.");
-  }
+  const pool = new Pool({
+    connectionString,
+    ssl: process.env.NODE_ENV === 'production' && process.env.DATABASE_URL ? { rejectUnauthorized: false } : undefined
+  });
 
-  // Simplified initialization for Vercel + Supabase pooling
-  return new PrismaClient();
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter });
 };
 
 declare const globalThis: {
