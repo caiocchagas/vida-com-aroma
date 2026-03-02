@@ -14,27 +14,27 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: "desc" },
         select: {
             email: true,
-            focusArea: true,
-            preferences: true,
-            stressLevel: true,
-            scentSensitivity: true,
-            interest: true,
-            safety: true,
+            mainComplaint: true,
+            chronology: true,
+            energyLevel: true,
+            clinicalRestrictions: true,
+            environment: true,
+            preferredMethod: true,
             hasPaid: true,
             createdAt: true,
         },
     });
 
     // Build CSV
-    const headers = ["Email", "Objetivo", "Perfil Aromático", "Nível de Estresse", "Sensibilidade", "Interesse Incenso", "Segurança", "Comprou", "Data Cadastro"];
+    const headers = ["Email", "Queixa Principal", "Cronologia", "Nível de Energia", "Restrições Clínicas", "Ambiente", "Método Preferido", "Comprou", "Data Cadastro"];
     const rows = users.map(u => [
         u.email,
-        u.focusArea ?? "",
-        u.preferences ?? "",
-        u.stressLevel ?? "",
-        u.scentSensitivity ?? "",
-        u.interest ?? "",
-        u.safety ?? "",
+        u.mainComplaint ?? "",
+        u.chronology ?? "",
+        u.energyLevel ?? "",
+        u.clinicalRestrictions ?? "",
+        u.environment ?? "",
+        u.preferredMethod ?? "",
         u.hasPaid ? "Sim" : "Não",
         new Date(u.createdAt).toLocaleDateString("pt-BR"),
     ]);
