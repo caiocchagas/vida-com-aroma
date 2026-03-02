@@ -91,10 +91,10 @@ export default function ClinicalQuizPage() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-stone-50 p-4 text-stone-800">
       <div className="w-full max-w-md rounded-2xl bg-white p-6 md:p-8 shadow-xl border border-stone-200">
 
-        {/* Header Anamnese Clínica */}
+        {/* Header Análise Aromática */}
         <div className="mb-6 flex flex-col items-center border-b border-stone-100 pb-4">
           <span className="text-3xl mb-2">🌿</span>
-          <h1 className="text-xl font-bold text-stone-700 tracking-tight">Anamnese Aromática</h1>
+          <h1 className="text-xl font-bold text-stone-700 tracking-tight">Análise Aromática Personalizada</h1>
         </div>
 
         {/* Progresso UI */}
@@ -222,8 +222,8 @@ export default function ClinicalQuizPage() {
                       key={option.id}
                       onClick={() => toggleMultiAnswer("clinicalRestrictions", option.id)}
                       className={`flex w-full items-center rounded-xl border-2 p-4 text-left transition active:scale-[0.98] ${isSelected
-                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                          : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                        : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
                         }`}
                     >
                       <div
@@ -271,8 +271,8 @@ export default function ClinicalQuizPage() {
                       key={option.id}
                       onClick={() => toggleMultiAnswer("environment", option.id)}
                       className={`flex w-full items-center rounded-xl border-2 p-4 text-left transition active:scale-[0.98] ${isSelected
-                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                          : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                        : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
                         }`}
                     >
                       <div
@@ -333,7 +333,7 @@ export default function ClinicalQuizPage() {
               <div className="mb-6 mx-auto w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               </div>
-              <h2 className="mb-2 text-2xl font-black text-stone-800">Sua anamnese está pronta.</h2>
+              <h2 className="mb-2 text-2xl font-black text-stone-800">A sua análise está pronta.</h2>
               <p className="mb-8 text-stone-500">
                 Insira o seu melhor e-mail para que eu possa cruzar as suas variáveis e liberar o seu Laudo Aromático e Prescrição Clínica.
               </p>
