@@ -8,9 +8,9 @@ function CheckoutContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const email = searchParams.get("email");
-    const brickControllerRef = useRef<any>(null);
     const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
     const [errorMsg, setErrorMsg] = useState("");
+    const [initPoint, setInitPoint] = useState<string | null>(null);
 
     useEffect(() => {
         if (!email) {
@@ -18,9 +18,8 @@ function CheckoutContent() {
             return;
         }
 
-        const initMercadoPago = async () => {
+        const createPreference = async () => {
             try {
-                // 1. Cria a preferência no backend (com back_urls configuradas)
                 const res = await fetch("/api/checkout/mercadopago", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -28,83 +27,28 @@ function CheckoutContent() {
                 });
                 const data = await res.json();
 
-                if (!res.ok || !data.preferenceId) {
+                if (!res.ok || !data.initPoint) {
                     setErrorMsg(data.error || "Erro ao criar sessão de pagamento.");
                     setStatus("error");
                     return;
                 }
 
-                // 2. Carrega o SDK do Mercado Pago dinamicamente
-                const publicKey = process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!;
-                const mp = new (window as any).MercadoPago(publicKey, {
-                    locale: "pt-BR",
-                });
-
-                // 3. Monta o Payment Brick — deixa o MP processar e redirecionar via back_urls
-                const bricksBuilder = mp.bricks();
-
-                brickControllerRef.current = await bricksBuilder.create("payment", "paymentBrick_container", {
-                    initialization: {
-                        amount: 19.90,
-                        preferenceId: data.preferenceId, // O Brick usa isso para processar E redirecionar
-                    },
-                    customization: {
-                        paymentMethods: {
-                            creditCard: "all",
-                            debitCard: "all",
-                            ticket: "all",      // Boleto
-                            bankTransfer: "all", // PIX
-                            maxInstallments: 1,
-                        },
-                        visual: {
-                            style: {
-                                theme: "default",
-                                customVariables: {
-                                    baseColor: "#065f46",
-                                    baseColorFirstVariant: "#047857",
-                                    baseColorSecondVariant: "#059669",
-                                },
-                            },
-                        },
-                    },
-                    callbacks: {
-                        onReady: () => {
-                            setStatus("ready");
-                        },
-                        onError: (error: any) => {
-                            console.error("Erro no Payment Brick:", error);
-                            setErrorMsg("Erro no formulário de pagamento. Por favor, recarregue a página.");
-                            setStatus("error");
-                        },
-                        // SEM onSubmit: o Brick processa o pagamento nativamente
-                        // e redireciona para back_urls.success configurado na preferência
-                    },
-                });
+                setInitPoint(data.initPoint);
+                setStatus("ready");
             } catch (error: any) {
-                console.error("Erro ao inicializar MP:", error);
-                setErrorMsg(error.message || "Erro ao carregar o formulário de pagamento.");
+                setErrorMsg(error.message || "Erro ao criar sessão de pagamento.");
                 setStatus("error");
             }
         };
 
-        // Injeta o script do MP dinamicamente se não existir
-        if (!(window as any).MercadoPago) {
-            const script = document.createElement("script");
-            script.src = "https://sdk.mercadopago.com/js/v2";
-            script.onload = initMercadoPago;
-            document.head.appendChild(script);
-        } else {
-            initMercadoPago();
-        }
-
-        return () => {
-            if (brickControllerRef.current) {
-                try {
-                    brickControllerRef.current.unmount();
-                } catch (_) { }
-            }
-        };
+        createPreference();
     }, [email, router]);
+
+    const handleGoToPayment = () => {
+        if (initPoint) {
+            window.location.href = initPoint;
+        }
+    };
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 font-sans">
@@ -119,14 +63,15 @@ function CheckoutContent() {
                     <p className="text-emerald-200 text-sm">Acesso Vitalício · R$ 19,90 · Pagamento Único</p>
                 </div>
 
-                {/* Brick Container */}
-                <div className="rounded-2xl bg-white p-6 shadow-sm border border-stone-200 min-h-[300px]">
+                {/* Conteúdo */}
+                <div className="rounded-2xl bg-white p-8 shadow-sm border border-stone-200 text-center">
                     {status === "loading" && (
                         <div className="flex flex-col items-center justify-center py-12 text-stone-500">
                             <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                            <p>Carregando métodos de pagamento...</p>
+                            <p>Preparando o seu pagamento seguro...</p>
                         </div>
                     )}
+
                     {status === "error" && (
                         <div className="text-center py-8">
                             <p className="text-red-600 font-bold mb-2">Ops! Algo deu errado.</p>
@@ -137,12 +82,43 @@ function CheckoutContent() {
                         </div>
                     )}
 
-                    {/* O Brick do Mercado Pago será renderizado aqui */}
-                    <div id="paymentBrick_container"></div>
+                    {status === "ready" && (
+                        <div className="py-6">
+                            <div className="text-5xl mb-6">🔐</div>
+                            <h2 className="text-xl font-bold text-stone-900 mb-3">Tudo pronto para o pagamento!</h2>
+                            <p className="text-stone-500 mb-8 max-w-sm mx-auto">
+                                Você será levado para a página segura do <strong>Mercado Pago</strong> para pagar com <strong>PIX, Cartão de Crédito ou Boleto</strong>.
+                            </p>
+
+                            <div className="flex flex-col gap-3 items-center mb-8">
+                                <div className="flex items-center gap-2 text-stone-600 text-sm">
+                                    <span className="text-green-500 text-lg">✓</span> PIX (aprovação instantânea)
+                                </div>
+                                <div className="flex items-center gap-2 text-stone-600 text-sm">
+                                    <span className="text-green-500 text-lg">✓</span> Cartão de Crédito / Débito
+                                </div>
+                                <div className="flex items-center gap-2 text-stone-600 text-sm">
+                                    <span className="text-green-500 text-lg">✓</span> Boleto Bancário
+                                </div>
+                            </div>
+
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8">
+                                <p className="text-emerald-800 font-bold text-2xl">R$ 19,90</p>
+                                <p className="text-emerald-600 text-sm">Pagamento único · Acesso vitalício</p>
+                            </div>
+
+                            <button
+                                onClick={handleGoToPayment}
+                                className="w-full rounded-xl bg-[#009ee3] hover:bg-[#007cb7] py-4 px-8 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
+                            >
+                                Pagar com Mercado Pago →
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <p className="text-center text-xs text-stone-400">
-                    🔒 Pagamento processado com segurança pelo Mercado Pago · SSL Certificado
+                    🔒 Ambiente 100% seguro · Seus dados são protegidos pelo Mercado Pago
                 </p>
             </div>
         </main>
