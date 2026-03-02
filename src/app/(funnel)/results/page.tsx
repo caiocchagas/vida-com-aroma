@@ -160,7 +160,7 @@ function ResultsContent() {
                     </div>
 
                     <h3 className="text-2xl md:text-3xl font-extrabold mb-4">
-                        Desbloqueie o &quot;Guia do Ritual Completo&quot; Agora
+                        Desbloqueie o &quot;Guia Aromático Completo&quot; Agora
                     </h3>
                     <p className="text-emerald-100 mb-8 max-w-xl mx-auto">
                         Você terá acesso imediato à Área de Membros com o passo-a-passo exato, dosagens corretas, dicas de segurança e os links secretos (baratos e originais) para comprar seus óleos hoje.
