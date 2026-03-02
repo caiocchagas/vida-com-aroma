@@ -36,7 +36,7 @@ function CheckoutContent() {
                             paymentMethods: {
                                 creditCard: "all",
                                 debitCard: "all",
-                                pix: "all",
+                                bankTransfer: "all",
                                 maxInstallments: 1,
                             },
                             visual: {

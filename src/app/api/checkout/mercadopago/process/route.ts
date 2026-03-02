@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
             userEmail,
         } = body;
 
-        const isPix = payment_method_id === "pix";
+        const isPix = payment_method_id === "pix" || payment_method_id === "bank_transfer";
 
         if (!userEmail || (!token && !isPix)) {
             return NextResponse.json({ error: "Dados incompletos para processar o pagamento." }, { status: 400 });
