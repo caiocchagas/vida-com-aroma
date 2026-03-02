@@ -19,32 +19,38 @@ export async function POST(req: NextRequest) {
             userEmail,
         } = body;
 
-        if (!userEmail || !token) {
+        const isPix = payment_method_id === "pix";
+
+        if (!userEmail || (!token && !isPix)) {
             return NextResponse.json({ error: "Dados incompletos para processar o pagamento." }, { status: 400 });
         }
 
         console.log("📦 Processando pagamento para:", userEmail);
-        console.log("💳 Método:", payment_method_id, "| Token:", token?.slice(0, 10) + "...");
+        console.log(isPix ? "🟡 Método: PIX" : `💳 Método: ${payment_method_id} | Token: ${token?.slice(0, 10)}...`);
 
         const payment = new Payment(client);
 
-        const paymentData = await payment.create({
-            body: {
-                token,
-                issuer_id,
-                payment_method_id,
-                transaction_amount: Number(transaction_amount) || 19.90,
-                installments: Number(installments) || 1,
-                description: "Guia Aromático — Protocolo 21 Dias",
-                payer: {
-                    email: payer?.email || userEmail,
-                    identification: payer?.identification,
-                },
-                metadata: {
-                    user_email: userEmail,
-                },
+        const paymentBody: any = {
+            payment_method_id,
+            transaction_amount: Number(transaction_amount) || 19.90,
+            description: "Guia Aromático — Protocolo 21 Dias",
+            payer: {
+                email: payer?.email || userEmail,
+                ...(payer?.identification && { identification: payer.identification }),
             },
-        });
+            metadata: {
+                user_email: userEmail,
+            },
+        };
+
+        // Cartão: adiciona token, issuer_id e parcelas
+        if (!isPix) {
+            paymentBody.token = token;
+            paymentBody.issuer_id = issuer_id;
+            paymentBody.installments = Number(installments) || 1;
+        }
+
+        const paymentData = await payment.create({ body: paymentBody });
 
         console.log("✅ Resposta MP:", paymentData.status, paymentData.status_detail);
 
