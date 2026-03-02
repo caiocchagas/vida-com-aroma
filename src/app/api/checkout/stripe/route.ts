@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
         // Cria a sessão de checkout na Stripe
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card", "boleto"], // Add PIX if Brazilian account is fully verified
+            payment_method_types: ["card"], // Removido 'boleto' por enquanto
             customer_email: user.email,
             line_items: [
                 {
