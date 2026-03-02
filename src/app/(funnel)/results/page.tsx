@@ -78,11 +78,24 @@ function ResultsContent() {
 
                     <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-6 md:p-8 mt-8 text-left">
                         <h2 className="mb-4 text-xl font-bold text-emerald-900 flex items-center gap-2">
-                            <span className="text-2xl">🌿</span> A Intervenção Exata
+                            <span className="text-2xl">🌿</span> As Suas Opções Clínicas
                         </h2>
                         <p className="text-stone-700 mb-6">
-                            A base do seu tratamento profilático requer a união de dois óleos essenciais principais: <strong>{recommendations?.primaryOil?.name || "Lavanda"}</strong> e <strong>{recommendations?.secondaryOil?.name || "Laranja Doce"}</strong>.
+                            Para o seu perfil, temos altíssima compatibilidade com as seguintes sinergias:
                         </p>
+
+                        {recommendations?.synergies && (
+                            <div className="space-y-4 mb-8">
+                                {recommendations.synergies.map((syn: any, idx: number) => (
+                                    <div key={idx} className="bg-white p-5 rounded-xl border border-emerald-100 shadow-sm relative overflow-hidden">
+                                        <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+                                        <h3 className="font-bold text-emerald-900 text-lg mb-1">{syn.title}</h3>
+                                        <p className="text-emerald-700 font-semibold mb-2 text-sm">{syn.oils.map((o: any) => o.name).join(" + ")}</p>
+                                        <p className="text-stone-600 text-sm leading-relaxed"><strong>{syn.actionName}:</strong> {syn.actionDesc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
                         {(recommendations?.alerts?.isPregnant || recommendations?.alerts?.hasBaby || recommendations?.alerts?.hasPet || recommendations?.alerts?.isAsma) && (
                             <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
