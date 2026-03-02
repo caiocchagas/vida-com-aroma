@@ -68,17 +68,17 @@ function ResultsContent() {
                         Análise Concluída com Sucesso!
                     </span>
                     <h1 className="mb-6 text-3xl md:text-5xl font-extrabold text-stone-900 leading-tight flex flex-col gap-2">
-                        <span className="text-xl md:text-2xl text-emerald-700 font-bold uppercase tracking-wider">O Seu Laudo Aromático:</span>
-                        {recommendations ? recommendations.diagnosisTitle : "Gerando laudo..."}
+                        <span className="text-xl md:text-2xl text-emerald-700 font-bold uppercase tracking-wider">O Seu Perfil Aromático:</span>
+                        {recommendations ? recommendations.diagnosisTitle : "Gerando perfil..."}
                     </h1>
                     <div className="mb-6 text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto bg-stone-100 p-6 rounded-xl border-l-4 border-emerald-500 text-left">
-                        <span className="font-bold text-stone-800 uppercase text-xs tracking-wider mb-2 block">O Veredito Clínico:</span>
+                        <span className="font-bold text-stone-800 uppercase text-xs tracking-wider mb-2 block">A Nossa Análise:</span>
                         {recommendations ? recommendations.diagnosisText : "Processando variáveis..."}
                     </div>
 
                     <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-6 md:p-8 mt-8 text-left">
                         <h2 className="mb-4 text-xl font-bold text-emerald-900 flex items-center gap-2">
-                            <span className="text-2xl">🌿</span> As Suas Opções Clínicas
+                            <span className="text-2xl">🌿</span> As Suas Melhores Opções
                         </h2>
                         <p className="text-stone-700 mb-6">
                             Para o seu perfil, temos altíssima compatibilidade com as seguintes sinergias:
@@ -99,7 +99,7 @@ function ResultsContent() {
 
                         {(recommendations?.alerts?.isPregnant || recommendations?.alerts?.hasBaby || recommendations?.alerts?.hasPet || recommendations?.alerts?.isAsma) && (
                             <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                                <h4 className="font-bold text-amber-800 mb-1 flex items-center gap-2">⚠️ Atenção Clínica Detectada</h4>
+                                <h4 className="font-bold text-amber-800 mb-1 flex items-center gap-2">⚠️ Atenção Específica Detectada</h4>
                                 <ul className="text-sm text-amber-700 list-disc list-inside">
                                     {recommendations.alerts.isPregnant && <li>Ajuste de diluição para 1% obrigatório devido à gestação.</li>}
                                     {recommendations.alerts.hasBaby && <li>Protocolos específicos para ambientes com bebês adicionados ao guia.</li>}
@@ -132,6 +132,19 @@ function ResultsContent() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Novo Bloco: Incensos e Velas */}
+                    <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-6 md:p-8 mt-8 text-left">
+                        <h2 className="mb-4 text-xl font-bold text-indigo-900 flex items-center gap-2">
+                            <span className="text-2xl">✨</span> Potencializando com Incensos e Velas
+                        </h2>
+                        <p className="text-stone-700 mb-4">
+                            Você pode maximizar ainda mais a ação da aromaterapia combinando o uso dos óleos com a queima de <strong>Incensos Naturais</strong> e <strong>Velas Aromáticas</strong>.
+                        </p>
+                        <p className="text-stone-700">
+                            A união dessas ferramentas ajuda a limpar as energias pesadas do ambiente e cria uma atmosfera perfeita de relaxamento e acolhimento para a sua rotina.
+                        </p>
                     </div>
                 </div>
 

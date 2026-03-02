@@ -51,9 +51,9 @@ export default async function MembersPage() {
                             O Seu Protocolo Prático <br /> de 21 Dias 🌿
                         </h1>
                         <p className="text-emerald-100 text-lg max-w-2xl leading-relaxed mt-6">
-                            <strong>Seja muito bem-vindo(a) ao lado seguro e clínico da aromaterapia.</strong>
+                            <strong>Seja muito bem-vindo(a) ao uso seguro e eficiente da aromaterapia.</strong>
                             <br /><br />
-                            Nos meus 10 anos de prática em consultório, vi centenas de pessoas a desistirem dos óleos essenciais porque não sabiam a quantidade certa a usar ou porque compraram essências sintéticas que não passam de &quot;cheirinhos&quot; sem qualquer valor terapêutico.
+                            Vejo muitas pessoas a desistirem dos óleos essenciais porque não sabiam a quantidade certa a usar ou porque compraram essências sintéticas que não passam de &quot;cheirinhos&quot; sem qualquer valor terapêutico.
                             <br /><br />
                             A partir de hoje, isso muda. Durante os próximos 21 dias, vamos reeducar o seu sistema nervoso e respiratório. Siga exatamente as dosagens abaixo.
                         </p>
@@ -107,7 +107,7 @@ export default async function MembersPage() {
                     </h2>
 
                     <p className="text-stone-600 mb-8 text-lg">
-                        Siga a rotina abaixo correspondente ao Laudo Aromático que recebeu no seu diagnóstico. A consistência nos próximos 21 dias é o segredo do sucesso.
+                        Siga a rotina abaixo correspondente ao Perfil Aromático que recebeu no seu diagnóstico. A consistência nos próximos 21 dias é o segredo do sucesso.
                     </p>
 
                     <div className="bg-emerald-50 rounded-2xl p-6 md:p-8 border border-emerald-100">
@@ -177,11 +177,43 @@ export default async function MembersPage() {
                     </div>
                 </div>
 
-                {/* Módulo 3: Farmácia Aromática (Links Afiliados) */}
+                {/* Módulo 3: Incensos e Velas */}
+                <div className="rounded-2xl bg-indigo-50 p-8 md:p-10 shadow-sm border border-indigo-100">
+                    <h2 className="mb-6 text-2xl font-bold text-indigo-900 border-b border-indigo-200 pb-4 flex items-center gap-2">
+                        <span className="text-3xl">✨</span> Módulo 3: O Poder Oculto dos Incensos e Velas
+                    </h2>
+
+                    <p className="text-indigo-800 mb-6 text-lg">
+                        Para acelerar a limpeza energética do seu ambiente e potencializar o efeito dos óleos essenciais, a queima de Incensos Naturais e Velas Aromáticas é o complemento perfeito.
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm">
+                            <h3 className="font-bold text-indigo-900 text-lg mb-3">Palo Santo e Sândalo</h3>
+                            <p className="text-stone-600 mb-2"><strong>Ação:</strong> Limpeza profunda e elevação espiritual.</p>
+                            <p className="text-stone-600 text-sm">Queime um bastão de Palo Santo ou um incenso de Sândalo natural no fim da tarde. O elemento Fogo desintegra as energias densas acumuladas no dia a dia, preparando o ambiente para a sinergia noturna.</p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm">
+                            <h3 className="font-bold text-indigo-900 text-lg mb-3">Velas Aromáticas</h3>
+                            <p className="text-stone-600 mb-2"><strong>Ação:</strong> Aconchego e foco indireto.</p>
+                            <p className="text-stone-600 text-sm">Opte sempre por velas feitas de cera vegetal e pavio de algodão. Acender uma vela durante a leitura ou no banho reduz a fadiga visual e traz conforto imediato.</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 bg-indigo-900 text-indigo-100 p-6 rounded-xl">
+                        <h4 className="font-bold text-white mb-2 flex items-center gap-2">⚠️ Atenção à Qualidade</h4>
+                        <p className="text-sm opacity-90">
+                            Grande parte dos incensos e velas de supermercado são feitos com carvão tóxico, parafina (derivado de petróleo) e essências sintéticas. Respirar isso causa dor de cabeça e alergias. Compre <strong className="text-white">apenas</strong> incensos de resina/massala e velas vegetais livres de parafina.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Módulo 4: Farmácia Aromática (Links Afiliados) */}
                 <div className="rounded-2xl bg-orange-50 p-8 md:p-10 shadow-sm border border-orange-100">
                     <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-orange-200 pb-4">
                         <h2 className="text-2xl font-bold text-orange-900 flex items-center gap-2">
-                            <span className="text-3xl">🛒</span> Módulo 3: A Sua Farmácia Aromática
+                            <span className="text-3xl">🛒</span> Módulo 4: A Sua Farmácia Aromática
                         </h2>
                     </div>
 

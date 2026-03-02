@@ -177,7 +177,7 @@ export function getRecommendations(user: UserData) {
         if (isHipertenso || isEpileptico) {
             protocolId = "foco_suave";
             diagnosisTitle = "Exaustão Mental (Protocolo Seguro)";
-            diagnosisText = "A exaustão mental gera uma névoa cognitiva. Devido ao seu histórico clínico (Hipertensão/Epilepsia), substituímos estimulantes fortes (como o Alecrim) por alternativas seguras e cientificamente validadas. As suas sinergias ideais são:";
+            diagnosisText = "A exaustão mental gera uma névoa cognitiva. Devido ao seu histórico de saúde (Hipertensão/Epilepsia), substituímos estimulantes fortes (como o Alecrim) por alternativas seguras e cientificamente validadas. As suas sinergias ideais são:";
 
             synergies = [
                 {
@@ -230,7 +230,7 @@ export function getRecommendations(user: UserData) {
     } else if (user.mainComplaint === "imunidade") {
         protocolId = "imunidade";
         diagnosisTitle = "Vulnerabilidade Imunológica e Respiratória";
-        diagnosisText = "As suas respostas apontam para uma vulnerabilidade no sistema imunológico e respiratório. O seu corpo precisa de compostos com propriedades antimicrobianas, antivirais e anti-inflamatórias documentadas na ciência para purificar o ar e fortalecer as suas defesas. As suas opções clínicas são:";
+        diagnosisText = "As suas respostas apontam para uma vulnerabilidade no sistema imunológico e respiratório. O seu corpo precisa de compostos com propriedades antimicrobianas, antivirais e anti-inflamatórias documentadas na ciência para purificar o ar e fortalecer as suas defesas. As suas melhores opções são:";
 
         synergies = [
             {
@@ -287,7 +287,7 @@ export function getRecommendations(user: UserData) {
         // Defaults (Ansiedade)
         protocolId = "ansiedade";
         diagnosisTitle = "Sobrecarga Crônica no Sistema Nervoso";
-        diagnosisText = "A sua anamnese indica uma sobrecarga crônica no sistema nervoso, mantendo o seu corpo em constante estado de alerta e elevando o seu cortisol (o hormônio do estresse). Para induzir um relaxamento profundo e rápido, atuando direto no centro das emoções do seu cérebro, o seu perfil tem altíssima compatibilidade com as seguintes sinergias:";
+        diagnosisText = "As suas respostas indicam uma sobrecarga crônica no sistema nervoso, mantendo o seu corpo em constante estado de alerta e elevando o seu cortisol (o hormônio do estresse). Para induzir um relaxamento profundo e rápido, atuando direto no centro das emoções do seu cérebro, o seu perfil tem altíssima compatibilidade com as seguintes sinergias:";
 
         synergies = [
             {
