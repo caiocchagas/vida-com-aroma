@@ -14,15 +14,12 @@ model User {
   password      String?
   role          String   @default("CUSTOMER")
   
-  focusArea         String?
-  preferences       String?
-  safety            String?
-  interest          String?
-  
-  stressLevel       String?
-  physicalSymptoms  String?
-  experience        String?
-  scentSensitivity  String?
+  mainComplaint     String?
+  chronology        String?
+  energyLevel       String?
+  clinicalRestrictions String? // will store JSON or comma-separated string of array
+  environment       String? // will store JSON or comma-separated string of array
+  preferredMethod   String?
   
   hasPaid       Boolean  @default(false)
   createdAt     DateTime @default(now())

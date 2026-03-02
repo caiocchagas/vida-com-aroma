@@ -1,12 +1,10 @@
 export type UserData = {
-    focusArea?: string | null;
-    preferences?: string | null;
-    stressLevel?: string | null;
-    physicalSymptoms?: string | null;
-    experience?: string | null;
-    scentSensitivity?: string | null;
-    interest?: string | null;
-    safety?: string | null;
+    mainComplaint?: string | null;
+    chronology?: string | null;
+    energyLevel?: string | null;
+    clinicalRestrictions?: string | null;
+    environment?: string | null;
+    preferredMethod?: string | null;
 };
 
 export type Oil = {
@@ -23,128 +21,145 @@ const OILS_CATALOG: Record<string, Oil> = {
     lavanda: {
         name: "Lavanda Francesa",
         botanicalName: "Lavandula angustifolia",
-        benefit: "Calmante e Regulador do Sono",
-        description: "O regulador oficial do sistema nervoso. Ele reduz os batimentos cardíacos e abaixa os níveis de cortisol induzindo a um estado de calma profunda.",
-        ritual: "Ritual Noturno: Pingue 1 gota no travesseiro 10 min antes de deitar ou use no difusor.",
+        benefit: "Relaxamento",
+        description: "",
+        ritual: "",
         colorClass: "bg-purple-100 text-purple-800 border-purple-200",
         shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20lavanda%20via%20aroma",
-    },
-    alecrim: {
-        name: "Alecrim",
-        botanicalName: "Rosmarinus officinalis",
-        benefit: "Foco, Memória e Energia",
-        description: "Estimulante cognitivo poderoso. Estudos mostram que inalar alecrim melhora a memorização e tira o 'nevoeiro mental' do cansaço.",
-        ritual: "Ritual Matinal: Inale profundamente o frasco por 3 respirações lentas ao acordar ou antes do trabalho.",
-        colorClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20alecrim%20via%20aroma",
-    },
-    melaleuca: {
-        name: "Melaleuca (Tea Tree)",
-        botanicalName: "Melaleuca alternifolia",
-        benefit: "Imunidade e Purificação",
-        description: "Antisséptico, antiviral e bactericida. Excelente para purificar ambientes e fortalecer a imunidade em períodos de muito estresse.",
-        ritual: "Ritual de Limpeza: Coloque 3 gotas no difusor para purificar o ar do ambiente.",
-        colorClass: "bg-teal-100 text-teal-800 border-teal-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20melaleuca%20via%20aroma",
     },
     laranja: {
         name: "Laranja Doce",
         botanicalName: "Citrus aurantium dulcis",
-        benefit: "Alegria e Redução de Ansiedade",
-        description: "O 'óleo da alegria'. Extremamente leve, cítrico e excelente para reduzir ansiedade leve e animar o ambiente sem sobrecarregar.",
-        ritual: "Ritual da Tarde: Use no colar difusor ou 4 gotas no difusor de ambiente para melhorar o humor.",
+        benefit: "Alegria/Calma",
+        description: "",
+        ritual: "",
         colorClass: "bg-orange-100 text-orange-800 border-orange-200",
         shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20laranja%20doce%20via%20aroma",
+    },
+    alecrim: {
+        name: "Alecrim",
+        botanicalName: "Rosmarinus officinalis",
+        benefit: "Foco/Memória",
+        description: "",
+        ritual: "",
+        colorClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20alecrim%20via%20aroma",
     },
     hortela: {
         name: "Hortelã-Pimenta",
         botanicalName: "Mentha piperita",
-        benefit: "Alívio de Dores e Clareza",
-        description: "Perfeito para dores de cabeça tensionais e exaustão física. Tem efeito analgésico e refrescante imediato.",
-        ritual: "Ritual de Alívio: Dilua 1 gota em base carreadora e passe nas têmporas e nuca quando tiver dor de cabeça.",
+        benefit: "Energia",
+        description: "",
+        ritual: "",
         colorClass: "bg-cyan-100 text-cyan-800 border-cyan-200",
         shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20hortela%20pimenta%20via%20aroma",
     },
-    cedro: {
-        name: "Cedro Virgínia",
-        botanicalName: "Juniperus virginiana",
-        benefit: "Aterramento e Força",
-        description: "Aroma amadeirado profundo que traz segurança, estrutura e ajuda a centrar mentes muito aceleradas ou dispersas.",
-        ritual: "Ritual Noturno: Massageie a sola dos pés com 1 gota diluída para 'desligar' a mente antes de dormir.",
+    melaleuca: {
+        name: "Melaleuca (Tea Tree)",
+        botanicalName: "Melaleuca alternifolia",
+        benefit: "Imunidade",
+        description: "",
+        ritual: "",
+        colorClass: "bg-teal-100 text-teal-800 border-teal-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20melaleuca%20via%20aroma",
+    },
+    eucalipto: {
+        name: "Eucalipto Globulus",
+        botanicalName: "Eucalyptus globulus",
+        benefit: "Respiração",
+        description: "",
+        ritual: "",
+        colorClass: "bg-blue-100 text-blue-800 border-blue-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20eucalipto%20via%20aroma",
+    },
+    mirra: {
+        name: "Mirra",
+        botanicalName: "Commiphora myrrha",
+        benefit: "Aterramento",
+        description: "",
+        ritual: "",
         colorClass: "bg-stone-200 text-stone-800 border-stone-300",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20cedro%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20mirra%20via%20aroma",
     },
-    geranio: {
-        name: "Gerânio",
-        botanicalName: "Pelargonium graveolens",
+    olibano: {
+        name: "Olíbano (Frankincense)",
+        botanicalName: "Boswellia carterii",
         benefit: "Equilíbrio Emocional",
-        description: "O óleo da mulher e do equilíbrio das emoções. Floral intenso, excelente para lidar com variações de humor e estresse alto.",
-        ritual: "Ritual Pessoal: Faça inalação direta ou use no escalda-pés após um dia extremamente estressante.",
-        colorClass: "bg-pink-100 text-pink-800 border-pink-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20geranio%20via%20aroma",
+        description: "",
+        ritual: "",
+        colorClass: "bg-amber-100 text-amber-800 border-amber-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20olibano%20via%20aroma",
     },
+    limao: {
+        name: "Limão Siciliano",
+        botanicalName: "Citrus limon",
+        benefit: "Foco Suave",
+        description: "",
+        ritual: "",
+        colorClass: "bg-yellow-100 text-yellow-800 border-yellow-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20limao%20siciliano%20via%20aroma",
+    }
 };
 
 export function getRecommendations(user: UserData) {
+    // Defaults (Ansiedade)
     let primaryOil = OILS_CATALOG.lavanda;
-    let secondaryOil = OILS_CATALOG.alecrim;
-    let environmentOil = OILS_CATALOG.melaleuca;
+    let secondaryOil = OILS_CATALOG.laranja;
 
-    // Análise do Foco Principal
-    if (user.focusArea === 'Reduzir a Ansiedade') {
-        primaryOil = OILS_CATALOG.lavanda;
-    } else if (user.focusArea === 'Melhorar o Foco') {
-        primaryOil = OILS_CATALOG.alecrim;
-    } else if (user.focusArea === 'Ter um Sono Profundo') {
-        primaryOil = OILS_CATALOG.lavanda;
-    }
+    let diagnosisTitle = "Sinergia Ansiolítica Profunda";
+    let diagnosisText = "A sua anamnese indica uma sobrecarga crônica no sistema nervoso, mantendo seu corpo em constante estado de alerta. A combinação do óleo essencial de Lavanda com a Laranja Doce é comprovada por estudos clínicos por atuar como um calmante natural de ação rápida. Quando inalada, essa sinergia interage diretamente com o centro das emoções no seu cérebro, reduzindo a produção de cortisol (hormônio do estresse) em minutos e induzindo a um relaxamento profundo.";
+    let protocolId = "ansiedade";
 
-    // Análise de Sintomas Físicos
-    const symptoms = user.physicalSymptoms || "";
-    if (symptoms.includes("Dores de cabeça")) {
-        secondaryOil = OILS_CATALOG.hortela;
-    } else if (symptoms.includes("Tensão muscular")) {
-        secondaryOil = OILS_CATALOG.hortela;
-    } else if (symptoms.includes("estômago")) {
-        secondaryOil = OILS_CATALOG.laranja;
-    }
+    const isHipertenso = user.clinicalRestrictions?.includes("hipertenso");
+    const isEpileptico = user.clinicalRestrictions?.includes("epilepsia");
+    const isAsma = user.clinicalRestrictions?.includes("asma");
 
-    // Preferências Aromáticas (Ajusta o ambiente/suporte)
-    if (user.preferences === 'Amadeirado e Terroso') {
-        environmentOil = OILS_CATALOG.cedro;
-    } else if (user.preferences === 'Floral e Doce') {
-        environmentOil = OILS_CATALOG.geranio;
-    } else if (user.preferences === 'Cítrico e Refrescante') {
-        environmentOil = OILS_CATALOG.laranja;
-    }
+    const isPregnant = user.environment?.includes("gestante");
+    const hasBaby = user.environment?.includes("bebe");
+    const hasPet = user.environment?.includes("pet");
 
-    // Sensibilidade (Substitui intensos por leves se a pessoa for sensível)
-    if (user.scentSensitivity?.includes("dor de cabeça")) {
-        if (environmentOil.name === "Gerânio") {
-            environmentOil = OILS_CATALOG.laranja; // Troca floral intenso por cítrico leve
+    // Lógica Q1
+    if (user.mainComplaint === "fadiga") {
+        if (isHipertenso || isEpileptico) {
+            // Blend Foco Suave
+            primaryOil = OILS_CATALOG.limao;
+            secondaryOil = OILS_CATALOG.hortela;
+            diagnosisTitle = "Sinergia de Foco Suave (Segura)";
+            diagnosisText = "A exaustão mental gera uma névoa cognitiva. Devido ao seu histórico clínico, formulamos uma sinergia segura focada em Limão Siciliano com um leve toque de Hortelã. Essa mistura age clareando a mente e estimulando a concentração sem elevar a pressão arterial ou causar agitação extrema.";
+            protocolId = "foco_suave";
+        } else {
+            // Blend Estimulante Cognitivo
+            primaryOil = OILS_CATALOG.alecrim;
+            secondaryOil = OILS_CATALOG.hortela;
+            diagnosisTitle = "Sinergia de Estimulação Cognitiva";
+            diagnosisText = "A exaustão mental que você relatou gera uma verdadeira névoa cognitiva. O óleo de Alecrim, aliado ao frescor da Hortelã-Pimenta, demonstrou em testes clínicos a capacidade de aumentar a oxigenação cerebral. Essa mistura age melhorando a velocidade de processamento mental, o foco e a retenção de memória, funcionando como um estimulante natural poderoso, mas sem os efeitos colaterais de agitação da cafeína.";
+            protocolId = "foco_forte";
         }
-        if (primaryOil.name === "Alecrim") {
-            primaryOil = OILS_CATALOG.laranja; // Troca canforados por cítricos
-        }
-    }
-
-    // Diagnóstico Texto
-    let diagnosisTitle = "Exaustão Mental e Tensão Acumulada";
-    if (user.stressLevel?.includes("Alto")) {
-        diagnosisTitle = "Sobrecarga Límbica Severa";
-    } else if (user.focusArea === "Ter um Sono Profundo") {
-        diagnosisTitle = "Ciclo Circadiano Desregulado";
-    } else if (user.focusArea === "Melhorar o Foco") {
-        diagnosisTitle = "Bruma Mental (Brain Fog) e Fadiga";
+    } else if (user.mainComplaint === "imunidade") {
+        primaryOil = OILS_CATALOG.melaleuca;
+        secondaryOil = OILS_CATALOG.eucalipto;
+        diagnosisTitle = "Sinergia Purificadora de Defesa";
+        diagnosisText = "As suas respostas apontam para uma vulnerabilidade no sistema imunológico. O óleo essencial de Melaleuca (muito conhecido como Tea Tree) junto com o Eucalipto formam um poderoso agente com propriedades antimicrobianas, antivirais e anti-inflamatórias documentadas na ciência. Eles agem purificando o ar do ambiente e fortalecendo rapidamente a resposta de defesa do seu trato respiratório.";
+        protocolId = "imunidade";
+    } else if (user.mainComplaint === "energetico") {
+        primaryOil = OILS_CATALOG.mirra;
+        secondaryOil = OILS_CATALOG.olibano;
+        diagnosisTitle = "Sinergia de Aterramento e Modulação";
+        diagnosisText = "A sensação de desgaste energético profundo exige aromas densos e estabilizadores. A Mirra e o Olíbano são resinas milenares que atuam diretamente no sistema límbico, modulando o estresse profundo e criando uma âncora olfativa. É a formulação exata para restaurar a sua integridade emocional, acalmar a mente e limpar o ambiente de tensões acumuladas.";
+        protocolId = "aterramento";
     }
 
     return {
         primaryOil,
         secondaryOil,
-        environmentOil,
         diagnosisTitle,
-        showIncense: user.interest !== "Apenas Óleos Essenciais",
-        hasPets: user.safety?.includes("Pets"),
-        hasKids: user.safety?.includes("Crianças"),
+        diagnosisText,
+        protocolId,
+        alerts: {
+            isPregnant,
+            hasBaby,
+            hasPet,
+            isAsma,
+        }
     };
 }

@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getRecommendations } from "@/lib/recommendations";
 
-export const dynamic = "force-dynamic";
-
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get("email");
@@ -15,6 +13,15 @@ export async function GET(request: NextRequest) {
     try {
         const user = await prisma.user.findUnique({
             where: { email },
+            select: {
+                name: true,
+                mainComplaint: true,
+                chronology: true,
+                energyLevel: true,
+                clinicalRestrictions: true,
+                environment: true,
+                preferredMethod: true
+            },
         });
 
         if (!user) {
@@ -26,7 +33,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ user, recommendations }, { status: 200 });
     } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Fetch User Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

@@ -3,30 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Tipagem para os passos do quiz
+// Tipagem para os 6 passos clínicos
 type QuizAnswers = {
-  focusArea: string;
-  preferences: string;
-  safety: string[];
-  interest: string;
-  stressLevel: string;
-  physicalSymptoms: string[];
-  experience: string;
-  scentSensitivity: string;
+  mainComplaint: string;
+  chronology: string;
+  energyLevel: string;
+  clinicalRestrictions: string[];
+  environment: string[];
+  preferredMethod: string;
 };
 
-export default function QuizPage() {
+export default function ClinicalQuizPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<QuizAnswers>({
-    focusArea: "",
-    preferences: "",
-    safety: [],
-    interest: "",
-    stressLevel: "",
-    physicalSymptoms: [],
-    experience: "",
-    scentSensitivity: "",
+    mainComplaint: "",
+    chronology: "",
+    energyLevel: "",
+    clinicalRestrictions: [],
+    environment: [],
+    preferredMethod: "",
   });
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -40,22 +36,30 @@ export default function QuizPage() {
   // Manipulador para respostas múltiplas (array)
   const toggleMultiAnswer = (field: keyof QuizAnswers, value: string) => {
     setAnswers((prev) => {
-      const currentArray = (prev[field] as string[]) || [];
+      let currentArray = (prev[field] as string[]) || [];
+
+      // Lógica de exclusão mútua ("seguro" e "ambiente_seguro" limpam o resto)
+      if (value === "seguro" || value === "ambiente_seguro") {
+        return { ...prev, [field]: [value] };
+      } else {
+        // Remove a opção excludente se estiver clicando em outra coisa
+        currentArray = currentArray.filter(i => i !== "seguro" && i !== "ambiente_seguro");
+      }
+
       const hasValue = currentArray.includes(value);
 
       return {
         ...prev,
         [field]: hasValue
-          ? currentArray.filter(i => i !== value)
-          : [...currentArray, value]
+          ? currentArray.filter((i) => i !== value)
+          : [...currentArray, value],
       };
     });
   };
 
-  // Botão de continuar para avançar na múltipla escolha
   const nextStep = () => {
-    if (step < 8) setStep(step + 1);
-    else setStep(9);
+    if (step < 6) setStep(step + 1);
+    else setStep(7); // Passo 7 é o formulário de Email
   };
 
   // Submissão do Lead
@@ -64,7 +68,6 @@ export default function QuizPage() {
     setIsLoading(true);
 
     try {
-      // Integração com a API
       const res = await fetch("/api/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -72,7 +75,6 @@ export default function QuizPage() {
       });
 
       if (res.ok) {
-        // Redireciona para gerar escassez/urgência (Results/Checkout)
         router.push(`/results?email=${encodeURIComponent(email)}`);
       } else {
         alert("Ocorreu um erro. Tente novamente.");
@@ -87,227 +89,279 @@ export default function QuizPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-stone-50 p-4 text-stone-800">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 md:p-8 shadow-xl">
-        {/* Progresso UI */}
-        <div className="mb-6 flex items-center justify-between text-sm font-medium text-stone-400">
-          <span>Aroma Match</span>
-          <span>Passo {step > 8 ? 8 : step} de 8</span>
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 md:p-8 shadow-xl border border-stone-200">
+
+        {/* Header Anamnese Clínica */}
+        <div className="mb-6 flex flex-col items-center border-b border-stone-100 pb-4">
+          <span className="text-3xl mb-2">🌿</span>
+          <h1 className="text-xl font-bold text-stone-700 tracking-tight">Anamnese Aromática</h1>
         </div>
 
-        <div className="mb-8 h-2 w-full rounded-full bg-stone-100">
+        {/* Progresso UI */}
+        <div className="mb-4 flex items-center justify-between text-xs font-semibold text-stone-400 uppercase tracking-wider">
+          <span>{step <= 6 ? "Avaliação Clínica" : "Gerando Laudo"}</span>
+          <span>Etapa {step > 6 ? 6 : step} de 6</span>
+        </div>
+
+        <div className="mb-10 h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
           <div
-            className="h-2 rounded-full bg-emerald-500 transition-all duration-300"
-            style={{ width: `${(step / 9) * 100}%` }}
+            className="h-full rounded-full bg-emerald-500 transition-all duration-500 ease-out"
+            style={{ width: `${(step / 7) * 100}%` }}
           />
         </div>
 
-        {/* Pergunta 1 */}
-        {step === 1 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">O que você mais deseja melhorar hoje?</h1>
-            <div className="flex flex-col gap-3">
-              {['Reduzir a Ansiedade', 'Melhorar o Foco', 'Ter um Sono Profundo'].map((opt) => (
+        {/* Perguntas */}
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {step === 1 && (
+            <div>
+              <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
+                Qual o aspecto que mais tem impactado negativamente a sua qualidade de vida hoje?
+              </h2>
+              <div className="space-y-3">
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("focusArea", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("mainComplaint", "ansiedade")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  Mente acelerada, ansiedade ou dificuldade para relaxar.
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Pergunta 2 */}
-        {step === 2 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Qual perfil aromático te atrai mais?</h1>
-            <div className="flex flex-col gap-3">
-              {['Amadeirado e Terroso', 'Floral e Doce', 'Cítrico e Refrescante'].map((opt) => (
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("preferences", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("mainComplaint", "fadiga")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  Cansaço mental extremo, falta de foco ou procrastinação.
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Pergunta 3 (Múltipla Escolha) */}
-        {step === 3 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-2 text-2xl font-bold">Alguma restrição de segurança no seu ambiente?</h1>
-            <p className="mb-6 text-stone-500 text-sm">Pode selecionar mais de uma opção.</p>
-            <div className="flex flex-col gap-3">
-              {['Tenho Pets (Cães/Gatos)', 'Tenho Crianças pequenas', 'Nenhuma restrição especial'].map((opt) => {
-                const isSelected = answers.safety.includes(opt);
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => toggleMultiAnswer("safety", opt)}
-                    className={`rounded-xl border p-4 text-left font-medium transition flex items-center justify-between ${isSelected
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                      : "border-stone-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-stone-700"
-                      }`}
-                  >
-                    {opt}
-                    <div className={`h-5 w-5 rounded border flex items-center justify-center ${isSelected ? "bg-emerald-500 border-emerald-500" : "border-stone-300"
-                      }`}>
-                      {isSelected && <span className="text-white text-xs">✓</span>}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              onClick={nextStep}
-              disabled={answers.safety.length === 0}
-              className="mt-6 w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50 transition"
-            >
-              Continuar &rarr;
-            </button>
-          </div>
-        )}
-
-        {/* Pergunta 4 */}
-        {step === 4 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Você tem interesse no uso de Incensos Naturais?</h1>
-            <div className="flex flex-col gap-3">
-              {['Sim, adoro incensos em casa', 'Apenas Óleos Essenciais', 'Gostaria de aprender sobre os dois'].map((opt) => (
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("interest", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("mainComplaint", "imunidade")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  Baixa imunidade, alergias ou problemas respiratórios frequentes.
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Pergunta 5 */}
-        {step === 5 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Como você classificaria seu nível de estresse atual?</h1>
-            <div className="flex flex-col gap-3">
-              {['Baixo, apenas rotineiro', 'Moderado, me sinto cansado(a) no fim do dia', 'Alto, sinto que estou no limite'].map((opt) => (
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("stressLevel", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("mainComplaint", "energetico")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  Sensação de ambiente pesado, necessidade de aterramento e proteção.
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Pergunta 6 (Múltipla Escolha) */}
-        {step === 6 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-2 text-2xl font-bold">Você sente reflexos físicos do cansaço no dia a dia?</h1>
-            <p className="mb-6 text-stone-500 text-sm">Pode selecionar mais de uma opção.</p>
-            <div className="flex flex-col gap-3">
-              {['Dores de cabeça tensionais', 'Dores no estômago / intestino', 'Tensão muscular nos ombros e pescoço', 'Nenhum sintoma físico forte'].map((opt) => {
-                const isSelected = answers.physicalSymptoms.includes(opt);
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => toggleMultiAnswer("physicalSymptoms", opt)}
-                    className={`rounded-xl border p-4 text-left font-medium transition flex items-center justify-between ${isSelected
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                      : "border-stone-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-stone-700"
-                      }`}
-                  >
-                    {opt}
-                    <div className={`h-5 w-5 rounded border flex items-center justify-center ${isSelected ? "bg-emerald-500 border-emerald-500" : "border-stone-300"
-                      }`}>
-                      {isSelected && <span className="text-white text-xs">✓</span>}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              onClick={nextStep}
-              disabled={answers.physicalSymptoms.length === 0}
-              className="mt-6 w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50 transition"
-            >
-              Continuar &rarr;
-            </button>
-          </div>
-        )}
-
-        {/* Pergunta 7 */}
-        {step === 7 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Você já usou aromaterapia de alguma forma antes?</h1>
-            <div className="flex flex-col gap-3">
-              {['Sim, uso com frequência', 'Apenas esporadicamente (umas gotinhas na fronha, etc)', 'Não, estou começando do zero'].map((opt) => (
+          {step === 2 && (
+            <div>
+              <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
+                Em relação a essa queixa principal, há quanto tempo você convive com esse sintoma?
+              </h2>
+              <div className="space-y-3">
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("experience", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("chronology", "agudo")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  ⏳ Começou há poucos dias/semanas.
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Pergunta 8 */}
-        {step === 8 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="mb-6 text-2xl font-bold">Você tem sensibilidade a cheiros muito doces ou marcantes?</h1>
-            <div className="flex flex-col gap-3">
-              {['Sim, me dão dor de cabeça (prefiro cítricos/suaves)', 'Um pouco, dependo do dia', 'Não, gosto de aromas presentes e intensos'].map((opt) => (
                 <button
-                  key={opt}
-                  onClick={() => handleSingleAnswer("scentSensitivity", opt)}
-                  className="rounded-xl border border-stone-200 p-4 text-left font-medium hover:border-emerald-500 hover:bg-emerald-50 transition"
+                  onClick={() => handleSingleAnswer("chronology", "cronico")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
-                  {opt}
+                  🔄 Há vários meses, já faz parte da rotina.
                 </button>
-              ))}
+                <button
+                  onClick={() => handleSingleAnswer("chronology", "resistente")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🧱 Há anos, sinto que nada resolve definitivamente.
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Captura de Lead */}
-        {step === 9 && (
-          <div className="animate-in fade-in zoom-in-95 duration-500 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-emerald-800">Seu Ritual está pronto!</h1>
-            <p className="mb-6 text-stone-600">
-              Analisamos seu perfil. Digite seu melhor e-mail para descobrir a combinação perfeita de óleos essenciais para você.
-            </p>
-            <form onSubmit={handleSubmitLead} className="flex flex-col gap-4">
-              <input
-                type="email"
-                required
-                placeholder="Seu melhor e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-stone-300 p-4 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              />
+          {step === 3 && (
+            <div>
+              <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
+                Como acontece o seu ciclo diário e o comportamento do seu nível de energia?
+              </h2>
+              <div className="space-y-3">
+                <button
+                  onClick={() => handleSingleAnswer("energyLevel", "energia_baixa")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🛌 Já acordo exausto(a), sem vontade de sair da cama.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("energyLevel", "pico_tarde")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  📉 Tenho uma queda brusca de energia no meio da tarde.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("energyLevel", "hiperativo_noite")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🦉 Fico hiperativo(a) à noite, a mente simplesmente não desliga.
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div>
+              <h2 className="mb-2 text-xl font-extrabold text-stone-800 leading-tight">
+                Para a sua segurança clínica, marque se você possui alguma destas condições:
+              </h2>
+              <p className="mb-6 text-sm text-stone-500">Isso ajustará as contraindicações do seu protocolo. Pode marcar mais de uma.</p>
+
+              <div className="space-y-3">
+                {[
+                  { id: "hipertenso", label: "Hipertensão arterial (Pressão alta)" },
+                  { id: "asma", label: "Asma ou bronquite severa" },
+                  { id: "epilepsia", label: "Epilepsia ou histórico de convulsões" },
+                  { id: "seguro", label: "Nenhuma pré-existente (Totalmente seguro)" },
+                ].map((option) => {
+                  const isSelected = answers.clinicalRestrictions.includes(option.id);
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => toggleMultiAnswer("clinicalRestrictions", option.id)}
+                      className={`flex w-full items-center rounded-xl border-2 p-4 text-left transition active:scale-[0.98] ${isSelected
+                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                          : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
+                        }`}
+                    >
+                      <div
+                        className={`mr-4 flex h-6 w-6 items-center justify-center rounded-md border-2 transition-colors ${isSelected ? "border-emerald-500 bg-emerald-500" : "border-stone-300"
+                          }`}
+                      >
+                        {isSelected && (
+                          <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className="font-medium">{option.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
               <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-xl bg-emerald-600 p-4 font-bold text-white shadow-lg hover:bg-emerald-700 disabled:opacity-70 transition"
+                onClick={nextStep}
+                disabled={answers.clinicalRestrictions.length === 0}
+                className="mt-6 w-full rounded-xl bg-emerald-600 py-4 font-bold text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-500 disabled:opacity-50 disabled:shadow-none"
               >
-                {isLoading ? "Processando..." : "Revelar Meu Resultado ->"}
+                Registrar Segurança Clínica →
               </button>
-            </form>
-            <p className="mt-4 text-xs text-stone-400">Odiamos spam. Seus dados estão seguros.</p>
-          </div>
-        )}
+            </div>
+          )}
+
+          {step === 5 && (
+            <div>
+              <h2 className="mb-2 text-xl font-extrabold text-stone-800 leading-tight">
+                Como é o ambiente onde você fará o seu tratamento profilático?
+              </h2>
+              <p className="mb-6 text-sm text-stone-500">Pode marcar mais de uma opção se aplicável à sua rotina.</p>
+
+              <div className="space-y-3">
+                {[
+                  { id: "gestante", label: "Sou gestante ou lactante" },
+                  { id: "bebe", label: "Tenho bebês menores de 2 anos em casa" },
+                  { id: "pet", label: "Tenho cães ou gatos que ficam no mesmo ambiente" },
+                  { id: "ambiente_seguro", label: "Moro sozinho(a) ou com adultos/crianças maiores" },
+                ].map((option) => {
+                  const isSelected = answers.environment.includes(option.id);
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => toggleMultiAnswer("environment", option.id)}
+                      className={`flex w-full items-center rounded-xl border-2 p-4 text-left transition active:scale-[0.98] ${isSelected
+                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                          : "border-stone-200 text-stone-600 hover:border-emerald-300 hover:bg-stone-50"
+                        }`}
+                    >
+                      <div
+                        className={`mr-4 flex h-6 w-6 items-center justify-center rounded-md border-2 transition-colors ${isSelected ? "border-emerald-500 bg-emerald-500" : "border-stone-300"
+                          }`}
+                      >
+                        {isSelected && (
+                          <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className="font-medium">{option.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                onClick={nextStep}
+                disabled={answers.environment.length === 0}
+                className="mt-6 w-full rounded-xl bg-emerald-600 py-4 font-bold text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-500 disabled:opacity-50 disabled:shadow-none"
+              >
+                Avançar →
+              </button>
+            </div>
+          )}
+
+          {step === 6 && (
+            <div>
+              <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
+                Como você prefere receber a terapia aromática no seu dia a dia?
+              </h2>
+              <div className="space-y-3">
+                <button
+                  onClick={() => handleSingleAnswer("preferredMethod", "difusor")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  💨 No difusor de ambiente (enquanto trabalho ou durmo).
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("preferredMethod", "topico")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  💆‍♀️ Em massagens relaxantes ou rolon direto na pele.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("preferredMethod", "inalacao")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  👃 Inalação rápida (no banho ou direto do frasco).
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 7 && (
+            <div className="text-center">
+              <div className="mb-6 mx-auto w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+              <h2 className="mb-2 text-2xl font-black text-stone-800">Sua anamnese está pronta.</h2>
+              <p className="mb-8 text-stone-500">
+                Insira o seu melhor e-mail para que eu possa cruzar as suas variáveis e liberar o seu Laudo Aromático e Prescrição Clínica.
+              </p>
+
+              <form onSubmit={handleSubmitLead} className="space-y-4">
+                <input
+                  type="email"
+                  required
+                  placeholder="Seu melhor e-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-lg outline-none transition focus:border-emerald-500"
+                />
+
+                <button
+                  type="submit"
+                  disabled={isLoading || !email}
+                  className="w-full rounded-xl bg-emerald-700 py-4 font-bold text-white shadow-xl shadow-emerald-200 transition hover:bg-emerald-600 disabled:opacity-70 disabled:shadow-none"
+                >
+                  {isLoading ? "Processando laudo clínico..." : "Liberar o Meu Laudo Exclusivo →"}
+                </button>
+              </form>
+              <p className="mt-6 text-xs text-stone-400 font-medium tracking-wide uppercase">
+                🔒 Clínica Segura • Suas informações não serão compartilhadas.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );

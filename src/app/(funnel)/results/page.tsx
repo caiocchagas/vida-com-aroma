@@ -67,20 +67,34 @@ function ResultsContent() {
                     <span className="inline-block rounded-full bg-emerald-100 px-4 py-1 text-sm font-bold text-emerald-800 mb-6 animate-pulse">
                         Análise Concluída com Sucesso!
                     </span>
-                    <h1 className="mb-6 text-3xl md:text-5xl font-extrabold text-stone-900 leading-tight">
-                        Descobrimos a Causa da Sua <br className="hidden md:block" /> {recommendations ? recommendations.diagnosisTitle : "Falta de Energia e Foco"}.
+                    <h1 className="mb-6 text-3xl md:text-5xl font-extrabold text-stone-900 leading-tight flex flex-col gap-2">
+                        <span className="text-xl md:text-2xl text-emerald-700 font-bold uppercase tracking-wider">O Seu Laudo Aromático:</span>
+                        {recommendations ? recommendations.diagnosisTitle : "Gerando laudo..."}
                     </h1>
-                    <p className="mb-6 text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
-                        Os dados do seu quiz revelam que sua condição atual precisa de atenção específica no sistema límbico. A boa notícia? <strong>Não é culpa sua e tem resolução.</strong> A intervenção aromaterápica exata para o seu caso já existe.
-                    </p>
+                    <div className="mb-6 text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto bg-stone-100 p-6 rounded-xl border-l-4 border-emerald-500 text-left">
+                        <span className="font-bold text-stone-800 uppercase text-xs tracking-wider mb-2 block">O Veredito Clínico:</span>
+                        {recommendations ? recommendations.diagnosisText : "Processando variáveis..."}
+                    </div>
 
                     <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-6 md:p-8 mt-8 text-left">
                         <h2 className="mb-4 text-xl font-bold text-emerald-900 flex items-center gap-2">
-                            <span className="text-2xl">🌿</span> O Seu Ritual Ideal: A Tríade {recommendations?.showIncense ? "+ O Poder do Incenso" : "do Equilíbrio"}
+                            <span className="text-2xl">🌿</span> A Intervenção Exata
                         </h2>
                         <p className="text-stone-700 mb-6">
-                            Baseado nas suas respostas e preferências, a combinação exata de <strong>{recommendations?.primaryOil?.name || "Lavanda"} (essencial diário)</strong>, <strong>{recommendations?.secondaryOil?.name || "Alecrim"} (suporte)</strong> e <strong>{recommendations?.environmentOil?.name || "Melaleuca"} (ambiente)</strong> é o atalho que falta na sua rotina.
+                            A base do seu tratamento profilático requer a união de dois óleos essenciais principais: <strong>{recommendations?.primaryOil?.name || "Lavanda"}</strong> e <strong>{recommendations?.secondaryOil?.name || "Laranja Doce"}</strong>.
                         </p>
+
+                        {(recommendations?.alerts?.isPregnant || recommendations?.alerts?.hasBaby || recommendations?.alerts?.hasPet || recommendations?.alerts?.isAsma) && (
+                            <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                <h4 className="font-bold text-amber-800 mb-1 flex items-center gap-2">⚠️ Atenção Clínica Detectada</h4>
+                                <ul className="text-sm text-amber-700 list-disc list-inside">
+                                    {recommendations.alerts.isPregnant && <li>Ajuste de diluição para 1% obrigatório devido à gestação.</li>}
+                                    {recommendations.alerts.hasBaby && <li>Protocolos específicos para ambientes com bebês adicionados ao guia.</li>}
+                                    {recommendations.alerts.hasPet && <li>Orientações de ventilação segura para os seus pets incluídas.</li>}
+                                    {recommendations.alerts.isAsma && <li>Inalação direta suspensa (substituída por difusão branda) devido ao histórico respiratório.</li>}
+                                </ul>
+                            </div>
+                        )}
 
                         <div className="space-y-4">
                             <div className="flex items-start bg-white p-4 rounded-lg shadow-sm">
