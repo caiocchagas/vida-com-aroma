@@ -22,10 +22,10 @@ export default async function AdminPage() {
             take: 100,
             select: {
                 email: true,
-                focusArea: true,
-                preferences: true,
-                stressLevel: true,
-                interest: true,
+                mainComplaint: true,
+                energyLevel: true,
+                clinicalRestrictions: true,
+                environment: true,
                 hasPaid: true,
                 createdAt: true,
             },
@@ -100,9 +100,9 @@ export default async function AdminPage() {
                             <thead>
                                 <tr className="border-b border-stone-800 text-stone-400 text-xs uppercase tracking-wider">
                                     <th className="text-left p-4">Email</th>
-                                    <th className="text-left p-4">Objetivo</th>
-                                    <th className="text-left p-4">Estresse</th>
-                                    <th className="text-left p-4">Incenso</th>
+                                    <th className="text-left p-4">Queixa Principal</th>
+                                    <th className="text-left p-4">Nível de Energia</th>
+                                    <th className="text-left p-4">Restrições (Segurança)</th>
                                     <th className="text-left p-4">Status</th>
                                     <th className="text-left p-4">Cadastro</th>
                                 </tr>
@@ -114,17 +114,15 @@ export default async function AdminPage() {
                                         className={`border-b border-stone-800/50 hover:bg-stone-800/40 transition ${i % 2 === 0 ? "" : "bg-stone-900/50"}`}
                                     >
                                         <td className="p-4 font-medium text-stone-200">{lead.email}</td>
-                                        <td className="p-4 text-stone-400">{lead.focusArea ?? "—"}</td>
-                                        <td className="p-4 text-stone-400">
-                                            {lead.stressLevel?.includes("Alto") ? (
-                                                <span className="text-red-400 font-medium">🔴 Alto</span>
-                                            ) : lead.stressLevel?.includes("Moderado") ? (
-                                                <span className="text-amber-400 font-medium">🟡 Moderado</span>
-                                            ) : (
-                                                <span className="text-emerald-400 font-medium">🟢 Baixo</span>
-                                            )}
+                                        <td className="p-4 text-stone-400 capitalize">{lead.mainComplaint ?? "—"}</td>
+                                        <td className="p-4 text-stone-400 capitalize">
+                                            {lead.energyLevel?.replace("_", " ") ?? "—"}
                                         </td>
-                                        <td className="p-4 text-stone-400">{lead.interest?.includes("Incensos") ? "✅ Sim" : "—"}</td>
+                                        <td className="p-4 text-stone-400">
+                                            {lead.clinicalRestrictions ? (
+                                                <span className="text-xs bg-stone-800 px-2 py-1 rounded-md">{lead.clinicalRestrictions}</span>
+                                            ) : "Seguro"}
+                                        </td>
                                         <td className="p-4">
                                             {lead.hasPaid ? (
                                                 <span className="bg-emerald-900/60 border border-emerald-700 text-emerald-400 text-xs font-bold px-2 py-1 rounded-full">
@@ -184,8 +182,8 @@ export default async function AdminPage() {
                                         <td className="p-4 text-emerald-400 font-bold">R$ {t.amount.toFixed(2)}</td>
                                         <td className="p-4">
                                             <span className={`text-xs font-bold px-2 py-1 rounded-full border ${t.status === "paid"
-                                                    ? "bg-emerald-900/60 border-emerald-700 text-emerald-400"
-                                                    : "bg-amber-900/60 border-amber-700 text-amber-400"
+                                                ? "bg-emerald-900/60 border-emerald-700 text-emerald-400"
+                                                : "bg-amber-900/60 border-amber-700 text-amber-400"
                                                 }`}>
                                                 {t.status === "paid" ? "✅ Pago" : t.status}
                                             </span>
