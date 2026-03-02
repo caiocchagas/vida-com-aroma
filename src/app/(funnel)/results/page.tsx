@@ -25,16 +25,16 @@ function ResultsContent() {
         }
     }, [email]);
 
-    const handleMockCheckout = async () => {
+    const handleStripeCheckout = async () => {
         if (!email) {
-            alert("Email não encontrado para o checkout.");
+            alert("Email não encontrado para o checkout. Por favor, refaça o teste.");
             return;
         }
 
         setIsProcessing(true);
 
         try {
-            const res = await fetch("/api/checkout/mock", {
+            const res = await fetch("/api/checkout/stripe", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -42,16 +42,16 @@ function ResultsContent() {
 
             const data = await res.json();
 
-            if (res.ok && data.redirectUrl) {
-                // Redireciona para a área de membros após "pagamento" mockado
-                router.push(data.redirectUrl);
+            if (res.ok && data.url) {
+                // Redireciona o usuário para a página de Checkout segura da Stripe
+                window.location.href = data.url;
             } else {
-                alert("Erro no checkout mockado: " + (data.error || "Desconhecido"));
+                alert("Erro ao iniciar o checkout seguro: " + (data.error || "Desconhecido"));
                 setIsProcessing(false);
             }
         } catch (error) {
             console.error(error);
-            alert("Erro de conexão com o checkout.");
+            alert("Erro de conexão com o servidor de pagamentos.");
             setIsProcessing(false);
         }
     };
@@ -195,11 +195,11 @@ function ResultsContent() {
                     </div>
 
                     <button
-                        onClick={handleMockCheckout}
+                        onClick={handleStripeCheckout}
                         disabled={isProcessing}
                         className="w-full md:w-2/3 mx-auto flex items-center justify-center rounded-xl bg-orange-500 py-5 px-8 text-xl md:text-2xl font-black text-white shadow-[0_4px_14px_0_rgba(249,115,22,0.39)] hover:bg-orange-600 hover:shadow-[0_6px_20px_rgba(249,115,22,0.23)] hover:-translate-y-1 active:translate-y-0 disabled:opacity-75 disabled:hover:translate-y-0 disabled:hover:shadow-none transition-all duration-200"
                     >
-                        {isProcessing ? "LIBERANDO ACESSO..." : "QUERO MEU ACESSO AGORA →"}
+                        {isProcessing ? "GERANDO PAGAMENTO SEGURO..." : "QUERO MEU ACESSO AGORA →"}
                     </button>
 
                     <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-emerald-300/80">
