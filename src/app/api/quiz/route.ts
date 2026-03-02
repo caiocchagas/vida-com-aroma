@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const {
             email,
+            lifeGoal,
             mainComplaint,
             chronology,
             energyLevel,
@@ -27,6 +28,7 @@ export async function POST(request: NextRequest) {
         const user = await prisma.user.upsert({
             where: { email },
             update: {
+                lifeGoal,
                 mainComplaint,
                 chronology,
                 energyLevel,
@@ -36,6 +38,7 @@ export async function POST(request: NextRequest) {
             },
             create: {
                 email,
+                lifeGoal,
                 mainComplaint,
                 chronology,
                 energyLevel,

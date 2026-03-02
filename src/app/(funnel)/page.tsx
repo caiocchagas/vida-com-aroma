@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 // Tipagem para os 6 passos clínicos
 type QuizAnswers = {
+  lifeGoal: string;
   mainComplaint: string;
   chronology: string;
   energyLevel: string;
@@ -17,6 +18,7 @@ export default function ClinicalQuizPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({
+    lifeGoal: "",
     mainComplaint: "",
     chronology: "",
     energyLevel: "",
@@ -58,8 +60,8 @@ export default function ClinicalQuizPage() {
   };
 
   const nextStep = () => {
-    if (step < 6) setStep(step + 1);
-    else setStep(7); // Passo 7 é o formulário de Email
+    if (step < 7) setStep(step + 1);
+    else setStep(8); // Passo 8 é o formulário de Email
   };
 
   const startQuiz = () => setStep(1);
@@ -139,10 +141,10 @@ export default function ClinicalQuizPage() {
         )}
 
         {/* Progresso UI — só aparece durante as perguntas */}
-        {step > 0 && step <= 7 && (
+        {step > 0 && step <= 8 && (
           <div className="mb-4 flex items-center justify-between text-xs font-semibold text-stone-400 uppercase tracking-wider">
-            <span>{step <= 6 ? "Avaliação Clínica" : "Gerando Laudo"}</span>
-            <span>Etapa {step > 6 ? 6 : step} de 6</span>
+            <span>{step <= 7 ? "Avaliação Clínica" : "Gerando Laudo"}</span>
+            <span>Etapa {step > 7 ? 7 : step} de 7</span>
           </div>
         )}
 
@@ -150,14 +152,58 @@ export default function ClinicalQuizPage() {
           <div className="mb-10 h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
             <div
               className="h-full rounded-full bg-emerald-500 transition-all duration-500 ease-out"
-              style={{ width: `${(step / 7) * 100}%` }}
+              style={{ width: `${(step / 8) * 100}%` }}
             />
           </div>
         )}
 
         {/* Perguntas */}
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+
+          {/* === NOVA PERGUNTA 1: Objetivo de vida === */}
           {step === 1 && (
+            <div>
+              <h2 className="mb-2 text-xl font-extrabold text-stone-800 leading-tight">
+                O que você mais deseja transformar na sua vida?
+              </h2>
+              <p className="mb-6 text-sm text-stone-500">Isso guiará toda a sua prescrição aromática.</p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "sono")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  😴 Dormir melhor e acordar com disposição real.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "foco")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🎯 Ter mais foco, clareza mental e produtividade.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "equilibrio")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🧘 Reduzir o estresse e ter mais equilíbrio emocional.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "energia")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  ⚡ Ter mais energia e vitalidade ao longo do dia.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "imunidade")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🛡️ Fortalecer a imunidade e respirar melhor.
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* === PERGUNTA 2 (antiga 1): Queixa principal === */}
+          {step === 2 && (
             <div>
               <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
                 Qual o aspecto que mais tem impactado negativamente a sua qualidade de vida hoje?
@@ -191,7 +237,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <div>
               <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
                 Em relação a essa queixa principal, há quanto tempo você convive com esse sintoma?
@@ -219,7 +265,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <div>
               <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
                 Como acontece o seu ciclo diário e o comportamento do seu nível de energia?
@@ -247,7 +293,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div>
               <h2 className="mb-2 text-xl font-extrabold text-stone-800 leading-tight">
                 Para a sua segurança clínica, marque se você possui alguma destas condições:
@@ -296,7 +342,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 5 && (
+          {step === 6 && (
             <div>
               <h2 className="mb-2 text-xl font-extrabold text-stone-800 leading-tight">
                 Como é o ambiente onde você fará o seu tratamento profilático?
@@ -345,7 +391,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 6 && (
+          {step === 7 && (
             <div>
               <h2 className="mb-6 text-xl font-extrabold text-stone-800 leading-tight">
                 Como você prefere receber a terapia aromática no seu dia a dia?
@@ -373,7 +419,7 @@ export default function ClinicalQuizPage() {
             </div>
           )}
 
-          {step === 7 && (
+          {step === 8 && (
             <div className="text-center">
               <div className="mb-6 mx-auto w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
