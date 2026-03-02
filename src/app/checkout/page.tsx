@@ -75,27 +75,36 @@ function CheckoutContent() {
                         onReady: () => {
                             setStatus("ready");
                         },
-                        onSubmit: async ({ formData }: any) => {
-                            // Processa o pagamento via backend
-                            const payRes = await fetch("/api/checkout/mercadopago/process", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ ...formData, userEmail: email }),
+                        onSubmit: ({ formData }: any) => {
+                            // O Brick EXIGE que onSubmit retorne uma Promise
+                            return new Promise<void>(async (resolve, reject) => {
+                                try {
+                                    const payRes = await fetch("/api/checkout/mercadopago/process", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ ...formData, userEmail: email }),
+                                    });
+
+                                    const payData = await payRes.json();
+
+                                    if (!payRes.ok) {
+                                        reject(new Error(payData.error || "Falha no pagamento"));
+                                        return;
+                                    }
+
+                                    if (payData.status === "approved") {
+                                        resolve();
+                                        window.location.href = `/register?email=${encodeURIComponent(email!)}`;
+                                    } else if (payData.status === "pending") {
+                                        resolve();
+                                        window.location.href = `/results?email=${encodeURIComponent(email!)}&status=pending`;
+                                    } else {
+                                        reject(new Error("Pagamento não aprovado. Verifique seus dados."));
+                                    }
+                                } catch (err: any) {
+                                    reject(err);
+                                }
                             });
-
-                            const payData = await payRes.json();
-
-                            if (!payRes.ok) {
-                                throw new Error(payData.error || "Falha no pagamento");
-                            }
-
-                            if (payData.status === "approved") {
-                                router.push(`/register?email=${encodeURIComponent(email)}`);
-                            } else if (payData.status === "pending") {
-                                router.push(`/results?email=${encodeURIComponent(email)}&status=pending`);
-                            } else {
-                                throw new Error("Pagamento não aprovado. Verifique os dados.");
-                            }
                         },
                         onError: (error: any) => {
                             console.error("Erro no Payment Brick:", error);
