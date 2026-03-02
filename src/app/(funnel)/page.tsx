@@ -15,7 +15,7 @@ type QuizAnswers = {
 
 export default function ClinicalQuizPage() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({
     mainComplaint: "",
     chronology: "",
@@ -62,6 +62,8 @@ export default function ClinicalQuizPage() {
     else setStep(7); // Passo 7 é o formulário de Email
   };
 
+  const startQuiz = () => setStep(1);
+
   // Submissão do Lead
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,23 +94,66 @@ export default function ClinicalQuizPage() {
       <div className="w-full max-w-md rounded-2xl bg-white p-6 md:p-8 shadow-xl border border-stone-200">
 
         {/* Header Análise Aromática */}
-        <div className="mb-6 flex flex-col items-center border-b border-stone-100 pb-4">
-          <span className="text-3xl mb-2">🌿</span>
-          <h1 className="text-xl font-bold text-stone-700 tracking-tight">Análise Aromática Personalizada</h1>
-        </div>
+        {step > 0 && (
+          <div className="mb-6 flex flex-col items-center border-b border-stone-100 pb-4">
+            <span className="text-3xl mb-2">🌿</span>
+            <h1 className="text-xl font-bold text-stone-700 tracking-tight">Análise Aromática Personalizada</h1>
+          </div>
+        )}
 
-        {/* Progresso UI */}
-        <div className="mb-4 flex items-center justify-between text-xs font-semibold text-stone-400 uppercase tracking-wider">
-          <span>{step <= 6 ? "Avaliação Clínica" : "Gerando Laudo"}</span>
-          <span>Etapa {step > 6 ? 6 : step} de 6</span>
-        </div>
+        {/* === TELA DE BOAS-VINDAS (Passo 0) === */}
+        {step === 0 && (
+          <div className="text-center py-4">
+            <div className="text-6xl mb-5">🌿</div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-3">
+              Descubra os Óleos Essenciais<br />
+              <span className="text-emerald-700">Feitos para o Seu Corpo</span>
+            </h1>
+            <p className="text-stone-600 text-base leading-relaxed mb-6 max-w-sm mx-auto">
+              Em menos de <strong>2 minutos</strong>, a nossa análise cruza o seu perfil com mais de <strong>40 combinações de sinergias aromáticas</strong> e entrega uma prescrição 100% personalizada — gratuita.
+            </p>
 
-        <div className="mb-10 h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
-          <div
-            className="h-full rounded-full bg-emerald-500 transition-all duration-500 ease-out"
-            style={{ width: `${(step / 7) * 100}%` }}
-          />
-        </div>
+            <div className="flex flex-col gap-2 text-sm text-stone-500 mb-8">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-emerald-500">✓</span> Descubra por que o seu corpo pede aromas específicos
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-emerald-500">✓</span> Receba 3 sinergias personalizadas para o seu perfil
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-emerald-500">✓</span> Saiba exatamente onde comprar os 100% puros (e baratos)
+              </div>
+            </div>
+
+            <button
+              onClick={startQuiz}
+              className="w-full rounded-xl bg-emerald-700 py-4 px-6 text-lg font-black text-white shadow-lg hover:bg-emerald-800 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+            >
+              Quero a Minha Análise Gratuita →
+            </button>
+
+            <p className="text-xs text-stone-400 mt-4">
+              🔒 Gratuito · Sem compromisso · Resultado em 2 minutos
+            </p>
+          </div>
+        )}
+
+        {/* Progresso UI — só aparece durante as perguntas */}
+        {step > 0 && step <= 7 && (
+          <div className="mb-4 flex items-center justify-between text-xs font-semibold text-stone-400 uppercase tracking-wider">
+            <span>{step <= 6 ? "Avaliação Clínica" : "Gerando Laudo"}</span>
+            <span>Etapa {step > 6 ? 6 : step} de 6</span>
+          </div>
+        )}
+
+        {step > 0 && (
+          <div className="mb-10 h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-emerald-500 transition-all duration-500 ease-out"
+              style={{ width: `${(step / 7) * 100}%` }}
+            />
+          </div>
+        )}
 
         {/* Perguntas */}
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
