@@ -23,6 +23,7 @@ model User {
   preferredMethod   String?
   
   hasPaid       Boolean  @default(false)
+  nurturingSent Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
