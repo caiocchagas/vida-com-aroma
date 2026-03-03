@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
         const paymentBody: any = {
             payment_method_id,
-            transaction_amount: Number(transaction_amount) || 19.90,
+            transaction_amount: Number(transaction_amount) || 1.00,
             description: "Guia Aromático — Protocolo 21 Dias",
             payer: {
                 email: payer?.email || userEmail,
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
                 await prisma.transaction.create({
                     data: {
                         userId: user.id,
-                        amount: paymentData.transaction_amount || 19.9,
+                        amount: paymentData.transaction_amount || 1.00,
                         status: "paid",
                         paymentId,
                     },

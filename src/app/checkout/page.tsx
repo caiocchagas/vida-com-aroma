@@ -30,7 +30,7 @@ function CheckoutContent() {
                         initialization: {
                             // Apenas o valor. SEM preferenceId.
                             // O Brick vai capturar o token do cartão e nos devolver no onSubmit.
-                            amount: 19.90,
+                            amount: 1.00,
                         },
                         customization: {
                             paymentMethods: {
@@ -64,7 +64,7 @@ function CheckoutContent() {
                                                 token: formData.token,
                                                 issuer_id: formData.issuer_id,
                                                 payment_method_id: formData.payment_method_id,
-                                                transaction_amount: 19.90,
+                                                transaction_amount: 1.00,
                                                 installments: formData.installments || 1,
                                                 payer: formData.payer,
                                                 userEmail: email,
@@ -134,7 +134,7 @@ function CheckoutContent() {
                         Pagamento 100% Seguro
                     </span>
                     <h1 className="text-2xl font-extrabold mb-1">Guia Aromático de 21 Dias</h1>
-                    <p className="text-emerald-200 text-sm">Acesso Vitalício · R$ 19,90 · Pagamento Único</p>
+                    <p className="text-emerald-200 text-sm">Acesso Vitalício · R$ 1,00 · Pagamento Único</p>
                 </div>
 
                 <div className="rounded-2xl bg-white p-6 shadow-sm border border-stone-200 min-h-[280px]">
