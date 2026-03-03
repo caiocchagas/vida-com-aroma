@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
@@ -15,10 +15,12 @@ function CheckoutContent() {
     const router = useRouter();
     const email = searchParams.get("email");
     const brickControllerRef = useRef<any>(null);
+    const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const [brickStatus, setBrickStatus] = useState<"loading" | "ready" | "error">("loading");
     const [errorMsg, setErrorMsg] = useState("");
     const [pixData, setPixData] = useState<PixData | null>(null);
     const [copied, setCopied] = useState(false);
+    const [pixStatus, setPixStatus] = useState<"waiting" | "approved" | "error">("waiting");
 
     function handleCopy() {
         if (!pixData?.qrCode) return;
@@ -26,6 +28,31 @@ function CheckoutContent() {
         setCopied(true);
         setTimeout(() => setCopied(false), 3000);
     }
+
+    const startPolling = useCallback((paymentId: string, emailParam: string) => {
+        pollIntervalRef.current = setInterval(async () => {
+            try {
+                const res = await fetch(`/api/checkout/mercadopago/status?paymentId=${paymentId}`);
+                const data = await res.json();
+
+                if (data.status === "approved") {
+                    clearInterval(pollIntervalRef.current!);
+                    setPixStatus("approved");
+                    setTimeout(() => {
+                        window.location.href = `/register?email=${encodeURIComponent(emailParam)}`;
+                    }, 1500);
+                }
+            } catch (_) {
+                // ignora erros de rede temporários
+            }
+        }, 4000); // verifica a cada 4 segundos
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+        };
+    }, []);
 
     useEffect(() => {
         if (!email) {
@@ -94,13 +121,13 @@ function CheckoutContent() {
                                             resolve();
                                             window.location.href = `/register?email=${encodeURIComponent(email!)}`;
                                         } else if (data.status === "pending" && data.qrCode) {
-                                            // PIX: mostrar QR Code na tela
                                             resolve();
                                             setPixData({
                                                 paymentId: data.paymentId,
                                                 qrCode: data.qrCode,
                                                 qrCodeBase64: data.qrCodeBase64,
                                             });
+                                            startPolling(data.paymentId, email!);
                                         } else if (data.status === "pending") {
                                             resolve();
                                             window.location.href = `/results?email=${encodeURIComponent(email!)}&status=pending`;
@@ -143,10 +170,25 @@ function CheckoutContent() {
                 try { brickControllerRef.current.unmount(); } catch (_) { }
             }
         };
-    }, [email, router]);
+    }, [email, router, startPolling]);
 
     // Tela de PIX gerado
     if (pixData) {
+        if (pixStatus === "approved") {
+            return (
+                <main className="flex min-h-screen flex-col items-center justify-center bg-stone-50 p-4 font-sans">
+                    <div className="text-center space-y-4">
+                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+                            <span className="text-4xl">✅</span>
+                        </div>
+                        <h2 className="text-2xl font-extrabold text-emerald-800">Pagamento confirmado!</h2>
+                        <p className="text-stone-500">Redirecionando para seu acesso...</p>
+                        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    </div>
+                </main>
+            );
+        }
+
         return (
             <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 font-sans">
                 <div className="w-full max-w-md mt-8 mb-20 space-y-6">
@@ -180,8 +222,9 @@ function CheckoutContent() {
                         </button>
                     </div>
 
-                    <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-amber-800 text-sm text-center">
-                        ⏳ Após o pagamento, seu acesso será liberado automaticamente em instantes.
+                    <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-amber-800 text-sm text-center flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
+                        <span>Aguardando confirmação do pagamento... Você será redirecionado automaticamente.</span>
                     </div>
 
                     <p className="text-center text-xs text-stone-400">
@@ -195,7 +238,6 @@ function CheckoutContent() {
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 font-sans">
             <div className="w-full max-w-2xl mt-8 mb-20 space-y-6">
-                {/* Cabeçalho */}
                 <div className="rounded-2xl bg-emerald-900 p-6 text-white text-center shadow-xl">
                     <span className="inline-block rounded-full bg-emerald-800 border border-emerald-700 px-4 py-1 text-xs font-bold text-emerald-300 mb-4 tracking-wider uppercase">
                         Pagamento 100% Seguro
