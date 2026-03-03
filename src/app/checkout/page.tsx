@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
+interface PixData {
+    paymentId: string;
+    qrCode: string;
+    qrCodeBase64: string;
+}
+
 function CheckoutContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -11,6 +17,15 @@ function CheckoutContent() {
     const brickControllerRef = useRef<any>(null);
     const [brickStatus, setBrickStatus] = useState<"loading" | "ready" | "error">("loading");
     const [errorMsg, setErrorMsg] = useState("");
+    const [pixData, setPixData] = useState<PixData | null>(null);
+    const [copied, setCopied] = useState(false);
+
+    function handleCopy() {
+        if (!pixData?.qrCode) return;
+        navigator.clipboard.writeText(pixData.qrCode);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+    }
 
     useEffect(() => {
         if (!email) {
@@ -78,6 +93,14 @@ function CheckoutContent() {
                                         if (data.status === "approved") {
                                             resolve();
                                             window.location.href = `/register?email=${encodeURIComponent(email!)}`;
+                                        } else if (data.status === "pending" && data.qrCode) {
+                                            // PIX: mostrar QR Code na tela
+                                            resolve();
+                                            setPixData({
+                                                paymentId: data.paymentId,
+                                                qrCode: data.qrCode,
+                                                qrCodeBase64: data.qrCodeBase64,
+                                            });
                                         } else if (data.status === "pending") {
                                             resolve();
                                             window.location.href = `/results?email=${encodeURIComponent(email!)}&status=pending`;
@@ -121,6 +144,53 @@ function CheckoutContent() {
             }
         };
     }, [email, router]);
+
+    // Tela de PIX gerado
+    if (pixData) {
+        return (
+            <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 font-sans">
+                <div className="w-full max-w-md mt-8 mb-20 space-y-6">
+                    <div className="rounded-2xl bg-emerald-900 p-6 text-white text-center shadow-xl">
+                        <span className="text-3xl mb-2 block">✅</span>
+                        <h1 className="text-xl font-extrabold mb-1">PIX gerado com sucesso!</h1>
+                        <p className="text-emerald-200 text-sm">Escaneie o QR Code ou copie o código abaixo</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-6 shadow-sm border border-stone-200 flex flex-col items-center gap-4">
+                        {pixData.qrCodeBase64 && (
+                            <img
+                                src={`data:image/png;base64,${pixData.qrCodeBase64}`}
+                                alt="QR Code PIX"
+                                className="w-56 h-56 rounded-xl border border-stone-200"
+                            />
+                        )}
+
+                        <p className="text-stone-500 text-sm text-center">ou use o código copia e cola:</p>
+
+                        <div className="w-full bg-stone-100 rounded-xl p-3 text-xs text-stone-600 break-all font-mono select-all">
+                            {pixData.qrCode}
+                        </div>
+
+                        <button
+                            onClick={handleCopy}
+                            className={`w-full py-3 rounded-xl font-bold text-white transition text-sm ${copied ? "bg-emerald-500" : "bg-emerald-700 hover:bg-emerald-600"
+                                }`}
+                        >
+                            {copied ? "✓ Código copiado!" : "📋 Copiar código PIX"}
+                        </button>
+                    </div>
+
+                    <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-amber-800 text-sm text-center">
+                        ⏳ Após o pagamento, seu acesso será liberado automaticamente em instantes.
+                    </div>
+
+                    <p className="text-center text-xs text-stone-400">
+                        🔒 Dados protegidos com criptografia SSL · Mercado Pago
+                    </p>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 font-sans">

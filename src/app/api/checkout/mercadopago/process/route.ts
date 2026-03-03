@@ -73,7 +73,17 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        return NextResponse.json({ status, statusDetail: paymentData.status_detail, paymentId });
+        const pixData = paymentData.point_of_interaction?.transaction_data;
+
+        return NextResponse.json({
+            status,
+            statusDetail: paymentData.status_detail,
+            paymentId,
+            ...(pixData && {
+                qrCode: pixData.qr_code,
+                qrCodeBase64: pixData.qr_code_base64,
+            }),
+        });
     } catch (error: any) {
         const cause = error?.cause;
         console.error("❌ Erro MP:", JSON.stringify(cause || error?.message || error));
