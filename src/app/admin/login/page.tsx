@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
                 <div className="mb-8 text-center">
                     <span className="text-4xl">🌿</span>
                     <h1 className="mt-4 text-2xl font-bold text-white">Admin Panel</h1>
-                    <p className="mt-1 text-sm text-stone-400">Vida com Aroma</p>
+                    <p className="mt-1 text-sm text-stone-400">A Vida com Aroma</p>
                 </div>
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>

@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
             try {
                 await sendEmail(
                     email,
-                    'Seu Guia Aromático foi liberado! 🌿 — Vida com Aroma',
+                    'Seu Guia Aromático foi liberado! 🌿 — A Vida com Aroma',
                     buildPurchaseConfirmationEmail()
                 );
             } catch (emailError) {

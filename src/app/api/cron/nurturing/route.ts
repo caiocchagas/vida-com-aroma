@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
             try {
                 await sendEmail(
                     user.email,
-                    'Sua análise aromática está pronta ✨ — Vida com Aroma',
+                    'Sua análise aromática está pronta ✨ — A Vida com Aroma',
                     buildWelcomeEmail()
                 );
 

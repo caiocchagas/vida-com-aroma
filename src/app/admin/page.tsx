@@ -49,7 +49,7 @@ export default async function AdminPage() {
                 <div>
                     <div className="flex items-center gap-3">
                         <span className="text-3xl">🌿</span>
-                        <h1 className="text-2xl font-extrabold tracking-tight">Vida com Aroma — Admin</h1>
+                        <h1 className="text-2xl font-extrabold tracking-tight">A Vida com Aroma — Admin</h1>
                     </div>
                     <p className="text-stone-500 text-sm mt-1">Painel de Gestão de Leads e Clientes</p>
                 </div>

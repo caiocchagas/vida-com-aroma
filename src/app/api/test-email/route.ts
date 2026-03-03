@@ -13,8 +13,8 @@ export async function GET(req: NextRequest) {
 
     try {
         const subject = type === 'purchase'
-            ? 'Seu Guia Aromático foi liberado! 🌿 — Vida com Aroma'
-            : 'Sua análise aromática está pronta ✨ — Vida com Aroma';
+            ? 'Seu Guia Aromático foi liberado! 🌿 — A Vida com Aroma'
+            : 'Sua análise aromática está pronta ✨ — A Vida com Aroma';
 
         const html = type === 'purchase'
             ? buildPurchaseConfirmationEmail()

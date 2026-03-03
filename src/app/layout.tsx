@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vida com Aroma — Aromaterapia Personalizada",
+  title: "A Vida com Aroma — Aromaterapia Personalizada",
   description: "Descubra os óleos essenciais e rituais certos para você com nosso quiz.",
 };
 

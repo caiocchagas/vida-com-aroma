@@ -12,7 +12,7 @@ const FROM_EMAIL = process.env.SES_FROM_EMAIL || 'contato@avidacomaroma.com.br';
 
 export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
   const command = new SendEmailCommand({
-    Source: `Vida com Aroma <${FROM_EMAIL}>`,
+    Source: `A Vida com Aroma <${FROM_EMAIL}>`,
     Destination: { ToAddresses: [to] },
     Message: {
       Subject: { Data: subject, Charset: 'UTF-8' },
@@ -44,7 +44,7 @@ export function buildWelcomeEmail(): string {
           <tr>
             <td style="background:linear-gradient(135deg,#1a5c3a 0%,#2e7d52 100%);padding:40px 48px;text-align:center;">
               <div style="font-size:36px;margin-bottom:8px;">🌿</div>
-              <h1 style="color:#fff;font-size:22px;font-weight:400;margin:0;letter-spacing:1px;">VIDA COM AROMA</h1>
+              <h1 style="color:#fff;font-size:22px;font-weight:400;margin:0;letter-spacing:1px;">A VIDA COM AROMA</h1>
               <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:6px 0 0;letter-spacing:2px;text-transform:uppercase;">Aromaterapia Personalizada</p>
             </td>
           </tr>
@@ -99,7 +99,7 @@ export function buildWelcomeEmail(): string {
 
               <p style="color:#9ca3af;font-size:13px;line-height:1.6;text-align:center;margin:0;">
                 Com carinho,<br/>
-                <strong style="color:#2e7d52;">Equipe Vida com Aroma</strong>
+                <strong style="color:#2e7d52;">Equipe A Vida com Aroma</strong>
               </p>
             </td>
           </tr>
@@ -109,7 +109,7 @@ export function buildWelcomeEmail(): string {
             <td style="background:#f9f9f7;padding:24px 48px;text-align:center;border-top:1px solid #ede9e0;">
               <p style="color:#b0b0a0;font-size:12px;margin:0;line-height:1.6;">
                 Você recebeu este email porque completou nossa análise aromática gratuita.<br/>
-                © 2025 Vida com Aroma · contato@avidacomaroma.com.br
+                © 2025 A Vida com Aroma · contato@avidacomaroma.com.br
               </p>
             </td>
           </tr>
@@ -143,7 +143,7 @@ export function buildPurchaseConfirmationEmail(): string {
             <td style="background:linear-gradient(135deg,#1a5c3a 0%,#2e7d52 100%);padding:40px 48px;text-align:center;">
               <div style="font-size:48px;margin-bottom:12px;">🎉</div>
               <h1 style="color:#fff;font-size:22px;font-weight:400;margin:0;letter-spacing:1px;">PAGAMENTO CONFIRMADO</h1>
-              <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:6px 0 0;letter-spacing:2px;text-transform:uppercase;">Vida com Aroma</p>
+              <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:6px 0 0;letter-spacing:2px;text-transform:uppercase;">A Vida com Aroma</p>
             </td>
           </tr>
 
@@ -202,7 +202,7 @@ export function buildPurchaseConfirmationEmail(): string {
 
               <p style="color:#9ca3af;font-size:13px;line-height:1.6;text-align:center;margin:0;">
                 Obrigada pela confiança 💚<br/>
-                <strong style="color:#2e7d52;">Equipe Vida com Aroma</strong>
+                <strong style="color:#2e7d52;">Equipe A Vida com Aroma</strong>
               </p>
             </td>
           </tr>
@@ -212,7 +212,7 @@ export function buildPurchaseConfirmationEmail(): string {
             <td style="background:#f9f9f7;padding:24px 48px;text-align:center;border-top:1px solid #ede9e0;">
               <p style="color:#b0b0a0;font-size:12px;margin:0;line-height:1.6;">
                 Dúvidas? Responda este email ou entre em contato: contato@avidacomaroma.com.br<br/>
-                © 2025 Vida com Aroma
+                © 2025 A Vida com Aroma
               </p>
             </td>
           </tr>
