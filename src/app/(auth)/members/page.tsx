@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getRecommendations } from "@/lib/recommendations";
+import { getRecommendations, type Oil } from "@/lib/recommendations";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +21,7 @@ export default async function MembersPage() {
         select: {
             hasPaid: true,
             name: true,
+            lifeGoal: true,
             mainComplaint: true,
             chronology: true,
             energyLevel: true,
@@ -35,7 +36,8 @@ export default async function MembersPage() {
     }
 
     const recs = getRecommendations(user as any);
-    const { primaryOil, secondaryOil, environmentOil, protocolId } = recs;
+    const { primaryOil, secondaryOil, environmentOil, protocolId, diagnosisTitle, diagnosisText, synergies, alerts } = recs;
+    const firstName = user.name?.split(' ')[0] ?? 'você';
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 md:p-8 text-stone-800 font-sans">
@@ -57,6 +59,61 @@ export default async function MembersPage() {
                             <br /><br />
                             A partir de hoje, isso muda. Durante os próximos 21 dias, vamos reeducar o seu sistema nervoso e respiratório. Siga exatamente as dosagens abaixo.
                         </p>
+                    </div>
+                </div>
+
+                {/* ─── DIAGNÓSTICO PERSONALIZADO ─── */}
+                <div className="rounded-2xl bg-white shadow-sm border border-stone-200 overflow-hidden">
+                    <div className="bg-gradient-to-r from-emerald-800 to-emerald-700 px-8 py-6">
+                        <span className="inline-block rounded-full bg-emerald-600/50 border border-emerald-500 px-3 py-1 text-xs font-bold text-emerald-200 mb-3 tracking-wider uppercase">Seu Diagnóstico Aromático</span>
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">{diagnosisTitle}</h2>
+                    </div>
+
+                    <div className="p-8 md:p-10">
+                        <p className="text-stone-600 text-lg leading-relaxed mb-8">{diagnosisText}</p>
+
+                        {/* Alertas de segurança */}
+                        {(alerts.isPregnant || alerts.hasBaby || alerts.hasPet || alerts.isAsma) && (
+                            <div className="mb-8 rounded-xl bg-amber-50 border border-amber-200 p-5">
+                                <h4 className="font-bold text-amber-900 mb-2 flex items-center gap-2">⚠️ Atenções Personalizadas para o Seu Perfil</h4>
+                                <ul className="space-y-1 text-sm text-amber-800">
+                                    {alerts.isPregnant && <li>✦ <strong>Gestante:</strong> Evite óleos de hortelã, alecrim e eucalipto. As sinergias selecionadas para você já consideram isso.</li>}
+                                    {alerts.hasBaby && <li>✦ <strong>Bebê em casa:</strong> Nunca difunda eucalipto ou hortelã perto de crianças menores de 3 anos.</li>}
+                                    {alerts.hasPet && <li>✦ <strong>Pet em casa:</strong> Gatos são sensíveis a óleos cítricos e à melaleuca. Difunda em ambientes bem ventilados e sem o animal.</li>}
+                                    {alerts.isAsma && <li>✦ <strong>Asma:</strong> Sempre faça um teste de inalação breve antes. Comece com apenas 1 gota no difusor.</li>}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* 3 Sinergias */}
+                        <h3 className="text-xl font-bold text-stone-800 mb-6">As suas 3 Sinergias Exclusivas 🌿</h3>
+                        <div className="space-y-6">
+                            {synergies.map((synergy, idx) => (
+                                <div key={synergy.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-6">
+                                    <div className="flex items-start justify-between gap-4 mb-4">
+                                        <div>
+                                            <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Sinergia {idx + 1}</span>
+                                            <h4 className="text-lg font-bold text-stone-900 mt-1">{synergy.title.replace(/Sinergia \d+ \(/, '').replace(')', '')}</h4>
+                                        </div>
+                                        <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 border border-emerald-200">{synergy.actionName}</span>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-3 mb-4">
+                                        {synergy.oils.map((oil: Oil) => (
+                                            <a key={oil.name} href={oil.shopeeLink} target="_blank" rel="noopener noreferrer"
+                                                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition hover:shadow-md ${oil.colorClass}`}>
+                                                🌱 {oil.name}
+                                                <span className="text-xs opacity-70">({oil.benefit})</span>
+                                            </a>
+                                        ))}
+                                    </div>
+
+                                    <p className="text-stone-600 text-sm leading-relaxed bg-white rounded-xl p-4 border border-stone-200">
+                                        💡 <strong>Por quê funciona:</strong> {synergy.actionDesc}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -246,6 +303,38 @@ export default async function MembersPage() {
                         <AffiliateCard title="Óleo de Coco Fracionado" subt="Para diluição na pele" emoji="🥥" link="https://shopee.com.br/search?keyword=oleo%20carreador%20vegetal" />
                         <AffiliateCard title="Difusor Ultrassônico" subt="Ambientes fechados" emoji="💨" link="https://shopee.com.br/search?keyword=difusor%20oleo%20essencial" />
                         <AffiliateCard title="Kit Frascos Roll-on" subt="Para levar na mala" emoji="🧴" link="https://shopee.com.br/search?keyword=frasco%20roll%20on%20vidro" />
+                    </div>
+                </div>
+
+                {/* ─── UPSELL: NOVA ANÁLISE COM 50% DE DESCONTO ─── */}
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-emerald-200">
+                    <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 p-8 md:p-10 text-white text-center relative overflow-hidden">
+                        {/* Decorative circles */}
+                        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
+                        <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-white/5" />
+
+                        <div className="relative z-10">
+                            <span className="inline-block rounded-full bg-yellow-400 text-yellow-900 px-4 py-1 text-xs font-extrabold mb-4 tracking-widest uppercase shadow-lg">
+                                🎁 Oferta Exclusiva para Clientes
+                            </span>
+                            <h2 className="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
+                                Sua vida mudou? <br />
+                                <span className="text-emerald-300">Refaça sua análise com 50% off.</span>
+                            </h2>
+                            <p className="text-emerald-100 text-lg max-w-xl mx-auto leading-relaxed mb-8">
+                                Com o tempo, as suas necessidades mudam. Conhece alguém que também poderia se beneficiar?
+                                Ao refazer o quiz, você obtém um protocolo atualizado pelo valor de <strong className="text-white">R$&nbsp;0,50</strong> — só pra quem já é nosso cliente.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <a href="/?returning=true"
+                                    className="inline-block rounded-full bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-extrabold text-lg px-10 py-4 transition shadow-xl hover:shadow-yellow-400/30 hover:scale-105 active:scale-95">
+                                    Quero Minha Análise Atualizada →
+                                </a>
+                            </div>
+
+                            <p className="mt-6 text-emerald-300/70 text-sm">Desconto aplicado automaticamente no checkout · Acesso vitalício</p>
+                        </div>
                     </div>
                 </div>
 

@@ -14,6 +14,8 @@ function CheckoutContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const email = searchParams.get("email");
+    const isReturning = searchParams.get("returning") === "true";
+    const PRICE = isReturning ? 0.50 : 1.00;
     const brickControllerRef = useRef<any>(null);
     const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const [brickStatus, setBrickStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -70,7 +72,7 @@ function CheckoutContent() {
 
                     bricksBuilder.create("payment", "paymentBrick_container", {
                         initialization: {
-                            amount: 1.00,
+                            amount: PRICE,
                         },
                         customization: {
                             paymentMethods: {
@@ -103,7 +105,7 @@ function CheckoutContent() {
                                                 token: formData.token,
                                                 issuer_id: formData.issuer_id,
                                                 payment_method_id: formData.payment_method_id,
-                                                transaction_amount: 1.00,
+                                                transaction_amount: PRICE,
                                                 installments: formData.installments || 1,
                                                 payer: formData.payer,
                                                 userEmail: email,
@@ -242,8 +244,21 @@ function CheckoutContent() {
                     <span className="inline-block rounded-full bg-emerald-800 border border-emerald-700 px-4 py-1 text-xs font-bold text-emerald-300 mb-4 tracking-wider uppercase">
                         Pagamento 100% Seguro
                     </span>
+                    {isReturning && (
+                        <div className="mb-3 inline-block rounded-full bg-yellow-400 text-yellow-900 px-4 py-1 text-xs font-extrabold tracking-widest uppercase shadow-md">
+                            🎁 50% de Desconto Aplicado!
+                        </div>
+                    )}
                     <h1 className="text-2xl font-extrabold mb-1">Guia Aromático de 21 Dias</h1>
-                    <p className="text-emerald-200 text-sm">Acesso Vitalício · R$ 1,00 · Pagamento Único</p>
+                    <p className="text-emerald-200 text-sm">
+                        Acesso Vitalício ·{" "}
+                        {isReturning ? (
+                            <><s className="opacity-50">R$ 1,00</s> <strong className="text-yellow-300">R$ 0,50</strong></>
+                        ) : (
+                            <>R$ 1,00</>
+                        )}
+                        {" "}· Pagamento Único
+                    </p>
                 </div>
 
                 <div className="rounded-2xl bg-white p-6 shadow-sm border border-stone-200 min-h-[280px]">
