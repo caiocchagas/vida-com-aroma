@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { sendEmail, buildPurchaseConfirmationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
     try {
@@ -63,6 +64,17 @@ export async function POST(req: NextRequest) {
             });
 
             console.log(`✅ Pagamento MP aprovado e acesso liberado para: ${email}`);
+
+            // Envia email de confirmação de compra (PIX)
+            try {
+                await sendEmail(
+                    email,
+                    'Seu Guia Aromático foi liberado! 🌿 — Vida com Aroma',
+                    buildPurchaseConfirmationEmail()
+                );
+            } catch (emailError) {
+                console.error('⚠️ Falha ao enviar email de confirmação (PIX webhook):', emailError);
+            }
         }
 
         return NextResponse.json({ received: true });

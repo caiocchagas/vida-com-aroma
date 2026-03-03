@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import prisma from "@/lib/prisma";
+import { sendEmail, buildPurchaseConfirmationEmail } from "@/lib/email";
 
 const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN as string,
@@ -70,6 +71,17 @@ export async function POST(req: NextRequest) {
                     },
                 });
                 console.log(`🎉 Acesso liberado para: ${userEmail}`);
+
+                // Envia email de confirmação de compra
+                try {
+                    await sendEmail(
+                        userEmail,
+                        'Seu Guia Aromático foi liberado! 🌿 — Vida com Aroma',
+                        buildPurchaseConfirmationEmail()
+                    );
+                } catch (emailError) {
+                    console.error('⚠️ Falha ao enviar email de confirmação (cartão):', emailError);
+                }
             }
         }
 

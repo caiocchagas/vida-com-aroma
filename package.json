@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.1000.0",
     "@prisma/client": "^5.10.0",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
