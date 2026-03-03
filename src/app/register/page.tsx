@@ -42,19 +42,13 @@ function RegisterContent() {
             return;
         }
 
-        // Auto-login after registration
-        const signInResult = await signIn("credentials", {
+        // Auto-login e redireciona direto para /members (área do guia)
+        await signIn("credentials", {
             email,
             password,
-            redirect: false,
+            callbackUrl: "/members",
+            redirect: true,
         });
-
-        if (signInResult?.ok) {
-            router.push("/members");
-        } else {
-            setError("Conta criada! Faça login para continuar.");
-            router.push("/login");
-        }
     };
 
     return (
