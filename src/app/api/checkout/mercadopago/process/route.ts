@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
             description: "Guia Aromático — Protocolo 21 Dias",
             payer: {
                 email: payer?.email || userEmail,
-                ...(payer?.identification && { identification: payer.identification }),
+                identification: payer?.identification || undefined,
             },
             metadata: {
                 user_email: userEmail,
