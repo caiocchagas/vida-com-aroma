@@ -89,7 +89,7 @@ export function buildWelcomeEmail(): string {
               <table cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
-                    <a href="https://app.avidacomaroma.com.br/" 
+                    <a href="https://app.avidacomaroma.com.br/results" 
                        style="display:inline-block;background:linear-gradient(135deg,#1a5c3a,#2e7d52);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
                       Ver Minha Análise Personalizada →
                     </a>
@@ -192,7 +192,7 @@ export function buildPurchaseConfirmationEmail(): string {
               <table cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
-                    <a href="https://app.avidacomaroma.com.br/guia" 
+                    <a href="https://app.avidacomaroma.com.br/members" 
                        style="display:inline-block;background:linear-gradient(135deg,#1a5c3a,#2e7d52);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
                       Acessar Meu Guia Agora →
                     </a>
