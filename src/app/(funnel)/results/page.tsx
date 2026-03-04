@@ -160,11 +160,33 @@ function ResultsContent() {
                     </div>
 
                     <h3 className="text-2xl md:text-3xl font-extrabold mb-4">
-                        Desbloqueie o &quot;Guia Aromático Completo&quot; Agora
+                        Desbloqueie o seu &quot;Protocolo Aromático Completo&quot;
                     </h3>
-                    <p className="text-emerald-100 mb-8 max-w-xl mx-auto">
-                        Você terá acesso imediato à Área de Membros com o passo-a-passo exato, dosagens corretas, dicas de segurança e os links secretos (baratos e originais) para comprar seus óleos hoje.
+                    <p className="text-emerald-100 mb-6 max-w-2xl mx-auto text-lg">
+                        O que você viu acima é apenas um resumo. Para que o tratamento seja 100% eficaz, você precisa da dosagem exata e da rotina correta.
                     </p>
+
+                    <div className="bg-emerald-800/40 rounded-xl p-6 mb-8 border border-emerald-700 max-w-2xl mx-auto text-left space-y-4">
+                        <h4 className="font-bold text-emerald-300 text-lg mb-2">O que você recebe imediatamente:</h4>
+                        <ul className="space-y-3 text-emerald-50">
+                            <li className="flex items-start gap-3">
+                                <span className="text-emerald-400 mt-1">✓</span>
+                                <div><strong>5 Rotinas Específicas:</strong> Sinergia para Acordar, Trabalhar, Relaxar, Dormir e Sinergia de Emergência (SOS).</div>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-emerald-400 mt-1">✓</span>
+                                <div><strong>A Receita Exata (Na Gota):</strong> Quantas gotas usar no difusor, colar aromático ou colar de massagem (com óleo de coco fracionado). Não tente adivinhar.</div>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-emerald-400 mt-1">✓</span>
+                                <div><strong>Farmácia Natural Dinâmica:</strong> Links secretos de fornecedores oficiais que vendem óleos puros com laudo (Shopee/Amazon), filtrados APENAS com os óleos da sua receita.</div>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-emerald-400 mt-1">✓</span>
+                                <div><strong>Rastreador de Hábitos (21 Dias):</strong> Acesso ao nosso aplicativo PWA para você marcar seu progresso e reeducar seu sistema nervoso em 21 dias.</div>
+                            </li>
+                        </ul>
+                    </div>
 
                     <div className="bg-emerald-800/50 rounded-xl p-6 mb-8 border border-emerald-700 max-w-md mx-auto">
                         <p className="text-emerald-200 mb-2 font-medium">De <span className="line-through text-emerald-400">R$ 97,00</span> por apenas:</p>
