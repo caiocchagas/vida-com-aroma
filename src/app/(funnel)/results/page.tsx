@@ -181,7 +181,7 @@ function ResultsContent() {
                     </button>
 
                     <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-emerald-300/80">
-                        <span className="flex items-center gap-1">🔒 Compra 100% Segura (Ambiente Teste)</span>
+                        <span className="flex items-center gap-1">🔒 Compra 100% Segura</span>
                         <span className="hidden md:inline">•</span>
                         <span className="flex items-center gap-1">✅ Garantia de 7 Dias</span>
                     </div>
