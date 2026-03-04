@@ -64,7 +64,7 @@ function ResultsContent() {
 
                         {recommendations?.synergies && (
                             <div className="space-y-4 mb-8">
-                                {recommendations.synergies.map((syn: any, idx: number) => (
+                                {recommendations.synergies.slice(0, 3).map((syn: any, idx: number) => (
                                     <div key={idx} className="bg-white p-5 rounded-xl border border-emerald-100 shadow-sm relative overflow-hidden">
                                         <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
                                         <h3 className="font-bold text-emerald-900 text-lg mb-1">{syn.title}</h3>
