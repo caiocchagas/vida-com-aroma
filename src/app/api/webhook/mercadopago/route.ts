@@ -39,10 +39,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ received: true });
         }
 
-        const email = payment.payer?.email || payment.metadata?.user_email;
+        const email = payment.payer?.email || payment.metadata?.user_email || payment.additional_info?.payer?.email;
 
         if (!email) {
             console.warn(`Webhook MP: pagamento aprovado, mas email não encontrado. ID: ${dataId}`);
+            console.warn("Payload recebido:", JSON.stringify(payment));
             return NextResponse.json({ received: true });
         }
 
