@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
                 await sendEmail(
                     user.email,
                     'Sua análise aromática está pronta ✨ — A Vida com Aroma',
-                    buildWelcomeEmail()
+                    buildWelcomeEmail(user.email)
                 );
 
                 // Marca como enviado e salva no array de sucessos

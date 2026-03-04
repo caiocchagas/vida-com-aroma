@@ -25,7 +25,7 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
 }
 
 // ─── Template: Boas-vindas / Nurturing ───────────────────────────────────────
-export function buildWelcomeEmail(): string {
+export function buildWelcomeEmail(userEmail: string): string {
   return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -89,7 +89,7 @@ export function buildWelcomeEmail(): string {
               <table cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
-                    <a href="https://app.avidacomaroma.com.br/results" 
+                    <a href="https://app.avidacomaroma.com.br/results?email=${encodeURIComponent(userEmail)}" 
                        style="display:inline-block;background:linear-gradient(135deg,#1a5c3a,#2e7d52);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
                       Ver Minha Análise Personalizada →
                     </a>

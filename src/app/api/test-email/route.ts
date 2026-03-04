@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
         const html = type === 'purchase'
             ? buildPurchaseConfirmationEmail()
-            : buildWelcomeEmail();
+            : buildWelcomeEmail(to);
 
         await sendEmail(to, subject, html);
 
