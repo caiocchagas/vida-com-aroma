@@ -42,7 +42,7 @@ export function buildWelcomeEmail(userEmail: string): string {
           
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a5c3a 0%,#2e7d52 100%);padding:40px 48px;text-align:center;">
+            <td style="background-color:#1a5c3a;padding:40px 48px;text-align:center;">
               <div style="font-size:36px;margin-bottom:8px;">🌿</div>
               <h1 style="color:#fff;font-size:22px;font-weight:400;margin:0;letter-spacing:1px;">A VIDA COM AROMA</h1>
               <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:6px 0 0;letter-spacing:2px;text-transform:uppercase;">Aromaterapia Personalizada</p>
@@ -90,7 +90,7 @@ export function buildWelcomeEmail(userEmail: string): string {
                 <tr>
                   <td align="center">
                     <a href="https://app.avidacomaroma.com.br/results?email=${encodeURIComponent(userEmail)}" 
-                       style="display:inline-block;background:linear-gradient(135deg,#1a5c3a,#2e7d52);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
+                       style="display:inline-block;background-color:#1a5c3a;color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
                       Ver Minha Análise Personalizada →
                     </a>
                   </td>
@@ -140,7 +140,7 @@ export function buildPurchaseConfirmationEmail(): string {
 
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a5c3a 0%,#2e7d52 100%);padding:40px 48px;text-align:center;">
+            <td style="background-color:#1a5c3a;padding:40px 48px;text-align:center;">
               <div style="font-size:48px;margin-bottom:12px;">🎉</div>
               <h1 style="color:#fff;font-size:22px;font-weight:400;margin:0;letter-spacing:1px;">PAGAMENTO CONFIRMADO</h1>
               <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:6px 0 0;letter-spacing:2px;text-transform:uppercase;">A Vida com Aroma</p>
@@ -193,7 +193,7 @@ export function buildPurchaseConfirmationEmail(): string {
                 <tr>
                   <td align="center">
                     <a href="https://app.avidacomaroma.com.br/members" 
-                       style="display:inline-block;background:linear-gradient(135deg,#1a5c3a,#2e7d52);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
+                       style="display:inline-block;background-color:#1a5c3a;color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:18px 40px;border-radius:50px;letter-spacing:0.5px;">
                       Acessar Meu Guia Agora →
                     </a>
                   </td>
