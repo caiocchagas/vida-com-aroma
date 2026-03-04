@@ -1,0 +1,16 @@
+{
+    "name": "A Vida com Aroma",
+    "short_name": "Aroma",
+    "description": "Sua Análise Aromática Personalizada e Protocolos Clínicos.",
+    "start_url": "/?pwa=1",
+    "display": "standalone",
+    "background_color": "#1a5c3a",
+    "theme_color": "#1a5c3a",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "192x192 512x512",
+            "type": "image/x-icon"
+        }
+    ]
+}

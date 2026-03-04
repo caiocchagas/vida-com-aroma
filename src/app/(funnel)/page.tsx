@@ -198,6 +198,12 @@ export default function ClinicalQuizPage() {
                 >
                   🛡️ Fortalecer a imunidade e respirar melhor.
                 </button>
+                <button
+                  onClick={() => handleSingleAnswer("lifeGoal", "hormonal")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  🌸 Equilibrar meus hormônios (Menopausa, TPM, Saúde Feminina).
+                </button>
               </div>
             </div>
           )}
@@ -232,6 +238,12 @@ export default function ClinicalQuizPage() {
                   className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
                 >
                   Sensação de ambiente pesado, necessidade de aterramento e proteção.
+                </button>
+                <button
+                  onClick={() => handleSingleAnswer("mainComplaint", "saude_mulher")}
+                  className="w-full rounded-xl border-2 border-stone-200 p-4 text-left font-medium text-stone-600 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 active:scale-[0.98]"
+                >
+                  Desconfortos femininos (TPM crônica, menopausa, cólicas, ovários policísticos).
                 </button>
               </div>
             </div>

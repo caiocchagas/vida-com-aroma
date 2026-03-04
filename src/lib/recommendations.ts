@@ -1,4 +1,5 @@
 export type UserData = {
+    lifeGoal?: string | null;
     mainComplaint?: string | null;
     chronology?: string | null;
     energyLevel?: string | null;
@@ -143,6 +144,24 @@ const OILS_CATALOG: Record<string, Oil> = {
         ritual: "",
         colorClass: "bg-orange-50 text-orange-900 border-orange-200",
         shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20cedro%20via%20aroma",
+    },
+    geranio: {
+        name: "Gerânio Bourbon",
+        botanicalName: "Pelargonium graveolens",
+        benefit: "Equilíbrio Hormonal",
+        description: "",
+        ritual: "",
+        colorClass: "bg-rose-100 text-rose-800 border-rose-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20geranio%20via%20aroma",
+    },
+    salvia: {
+        name: "Sálvia Esclareia",
+        botanicalName: "Salvia sclarea",
+        benefit: "Tônico Feminino",
+        description: "",
+        ritual: "",
+        colorClass: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20salvia%20esclareia%20via%20aroma",
     }
 };
 
@@ -152,6 +171,7 @@ export type Synergy = {
     oils: Oil[];
     actionName: string;
     actionDesc: string;
+    recipe?: string;
 };
 
 export function getRecommendations(user: UserData) {
@@ -182,48 +202,86 @@ export function getRecommendations(user: UserData) {
             synergies = [
                 {
                     id: "foco_1_seguro",
-                    title: "Sinergia 1 (Estimulação Segura)",
+                    title: "Sinergia 1 (Despertar Seguro)",
                     oils: [OILS_CATALOG.limao, OILS_CATALOG.hortela],
-                    actionName: "Ação de Foco Seguro",
-                    actionDesc: "O Limão Siciliano clareia a mente sem elevar a pressão, enquanto a Hortelã desperta de forma suave e controlada."
+                    actionName: "Ação de Acordar e Foco",
+                    actionDesc: "O Limão Siciliano clareia a mente sem elevar a pressão arterial, enquanto a Hortelã desperta de forma suave.",
+                    recipe: "Inalação a vapor matinal: Pingue 2 gotas de Limão Siciliano e 1 gota de Hortelã-Pimenta no piso do box do banheiro na hora do banho quente."
                 },
                 {
                     id: "foco_2_seguro",
-                    title: "Sinergia 2 (Clareza Mental)",
+                    title: "Sinergia 2 (Clareza Mental Constante)",
                     oils: [OILS_CATALOG.limao, OILS_CATALOG.capim_limao],
-                    actionName: "Ação de Produtividade",
-                    actionDesc: "O Limão dissolve a névoa mental e o Capim-Limão traz ânimo constante para o início do dia de trabalho."
+                    actionName: "Ação de Produtividade Diurna",
+                    actionDesc: "O Limão dissolve a névoa mental e o Capim-Limão traz ânimo constante para o ambiente de trabalho.",
+                    recipe: "No difusor de ambiente: pingue 4 gotas de Limão Siciliano e 3 gotas de Capim-Limão. Deixe ligado no seu escritório ou mesa de trabalho."
                 },
                 {
                     id: "foco_3_seguro",
                     title: "Sinergia 3 (Foco sem Ansiedade)",
                     oils: [OILS_CATALOG.capim_limao, OILS_CATALOG.hortela],
-                    actionName: "Ação Equilibrante",
-                    actionDesc: "Ideal para quem precisa de muita concentração, mas não pode ficar muito agitado. Mantém o alerta de forma serena."
+                    actionName: "Ação Equilibrante Pós-Almoço",
+                    actionDesc: "Ideal para aquela queda de energia das 15h. Mantém o alerta de forma serena e segura.",
+                    recipe: "Inalação Rápida: pingue 1 gota de Hortelã e 1 de Capim-Limão na palma das mãos, esfregue levemente e inale profundamente em concha por 2 minutos."
+                },
+                {
+                    id: "foco_4_seguro",
+                    title: "Sinergia 4 (Descompressão Controlada)",
+                    oils: [OILS_CATALOG.bergamota, OILS_CATALOG.lavanda],
+                    actionName: "Ação de Limpeza do Estresse",
+                    actionDesc: "Abaixa o ritmo do cérebro para sinalizar o fim do expediente, protegendo o sistema cardiovascular da tensão acumulada.",
+                    recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo de Coco Fracionado com 3 gotas de Lavanda e 2 de Bergamota. Aplique nos pulsos e nuca às 18h."
+                },
+                {
+                    id: "foco_5_seguro",
+                    title: "Sinergia 5 (Sono Restaurador Seguro)",
+                    oils: [OILS_CATALOG.lavanda, OILS_CATALOG.camomila],
+                    actionName: "Ação Sedativa e Reparadora",
+                    actionDesc: "A exaustão mental exige sono reparador sem sobrecarga ao sistema nervoso. Induz relaxamento físico profundo.",
+                    recipe: "Spray de Travesseiro: Em 30ml de álcool de cereais com 20ml de água, misture 8 gotas de Lavanda e 4 de Camomila Romana. Borrife no travesseiro 10 min antes de dormir."
                 }
             ];
         } else {
             synergies = [
                 {
                     id: "foco_1",
-                    title: "Sinergia 1 (Estimulação Cognitiva Máxima)",
+                    title: "Sinergia 1 (Despertar Matinal)",
                     oils: [OILS_CATALOG.alecrim, OILS_CATALOG.hortela],
-                    actionName: "Ação de Foco",
-                    actionDesc: "O Alecrim estimula a memória e a retenção de dados, enquanto a Hortelã desperta a mente de forma imediata."
+                    actionName: "Ação de Acordar e Foco Rápido",
+                    actionDesc: "O Alecrim estimula a retenção de dados e a Hortelã desperta a mente de forma imediata, tirando a inércia do sono.",
+                    recipe: "Pingue 2 gotas de Alecrim e 1 gota de Hortelã-Pimenta no piso do box do banheiro na hora do banho quente matinal (Inalação a vapor)."
                 },
                 {
                     id: "foco_2",
                     title: "Sinergia 2 (Clareza Mental e Disposição)",
                     oils: [OILS_CATALOG.limao, OILS_CATALOG.alecrim],
-                    actionName: "Ação de Produtividade",
-                    actionDesc: "O Limão Siciliano dissolve a névoa mental e traz ânimo, excelente para começar o dia de trabalho associado ao Alecrim."
+                    actionName: "Ação de Produtividade no Trabalho",
+                    actionDesc: "O Limão Siciliano dissolve a névoa mental e traz ânimo constante para o ambiente de trabalho.",
+                    recipe: "No difusor de ambiente: pingue 5 gotas de Limão Siciliano e 3 gotas de Alecrim. Deixe ligado no seu escritório ou mesa."
                 },
                 {
                     id: "foco_3",
-                    title: "Sinergia 3 (Foco sem Ansiedade)",
+                    title: "Sinergia 3 (Foco sem Ansiedade Pós-Almoço)",
                     oils: [OILS_CATALOG.capim_limao, OILS_CATALOG.hortela],
-                    actionName: "Ação Equilibrante",
-                    actionDesc: "Ideal para quem precisa de muita concentração, mas não pode ficar muito agitado. Mantém o alerta de forma serena."
+                    actionName: "Ação Antifadiga da Tarde",
+                    actionDesc: "Ideal para aquela queda de energia das 15h. Mantém o alerta de forma serena.",
+                    recipe: "Inalação Rápida: pingue 1 gota de Hortelã e 1 de Capim-Limão na palma das mãos, esfregue e inale profundamente em concha por 3 minutos."
+                },
+                {
+                    id: "foco_4",
+                    title: "Sinergia 4 (Descompressão Fim de Tarde)",
+                    oils: [OILS_CATALOG.bergamota, OILS_CATALOG.lavanda],
+                    actionName: "Ação de Limpeza do Estresse",
+                    actionDesc: "Abaixa o ritmo do cérebro para sinalizar que o dia de trabalho acabou, sem causar sonolência extrema ainda.",
+                    recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo de Coco Fracionado com 3 gotas de Lavanda e 2 de Bergamota. Aplique nos pulsos e nuca às 18h."
+                },
+                {
+                    id: "foco_5",
+                    title: "Sinergia 5 (Sono de Reparo Cognitivo)",
+                    oils: [OILS_CATALOG.lavanda, OILS_CATALOG.camomila],
+                    actionName: "Ação de Limpeza Cerebral",
+                    actionDesc: "Exaustão mental só se cura com sono profundo. Essa combinação força o corpo a atingir o estágio REM.",
+                    recipe: "Spray de Travesseiro: Em 30ml de álcool de cereais com 20ml de água, pingue 10 gotas de Lavanda e 5 de Camomila Romana. Borrife no travesseiro 10 min antes de deitar."
                 }
             ];
         }
@@ -235,24 +293,43 @@ export function getRecommendations(user: UserData) {
         synergies = [
             {
                 id: "imune_1",
-                title: "Sinergia 1 (Purificadora de Defesa)",
-                oils: [OILS_CATALOG.melaleuca, OILS_CATALOG.eucalipto],
-                actionName: "Ação Protetora",
-                actionDesc: "A combinação mais poderosa da aromaterapia para eliminar microrganismos do ambiente e blindar a saúde."
+                title: "Sinergia 1 (Purificadora Matinal)",
+                oils: [OILS_CATALOG.limao, OILS_CATALOG.melaleuca],
+                actionName: "Ação Imunoestimulante",
+                actionDesc: "O Limão estimula a produção de glóbulos brancos e a Melaleuca age como um tônico matinal de defesa.",
+                recipe: "Banho Matinal: Pingue 2 gotas de Limão Siciliano e 1 de Melaleuca no piso do box durante o banho quente para limpar as vias aéreas ao acordar."
             },
             {
                 id: "imune_2",
-                title: "Sinergia 2 (Desobstrução Imediata)",
-                oils: [OILS_CATALOG.eucalipto, OILS_CATALOG.hortela],
-                actionName: "Ação Expectorante",
-                actionDesc: "Perfeita para crises de rinite, sinusite ou sensação de peito e nariz carregados. Abre as vias respiratórias em minutos."
+                title: "Sinergia 2 (Blindagem Ambiental)",
+                oils: [OILS_CATALOG.melaleuca, OILS_CATALOG.eucalipto],
+                actionName: "Ação Protetora Antiviral",
+                actionDesc: "A combinação mais poderosa da aromaterapia para eliminar vírus e bactérias do ar e blindar a saúde e o espaço de trabalho.",
+                recipe: "No difusor de ambiente: misture 4 gotas de Melaleuca e 4 gotas de Eucalipto. Deixe ligado no cômodo em que você passa mais tempo no dia."
             },
             {
                 id: "imune_3",
-                title: "Sinergia 3 (Estímulo de Imunidade)",
-                oils: [OILS_CATALOG.limao, OILS_CATALOG.melaleuca],
-                actionName: "Ação de Limpeza Linfática",
-                actionDesc: "Excelente para usar durante o dia, fortalece as defesas do organismo enquanto purifica o ar de forma leve e agradável."
+                title: "Sinergia 3 (Desobstrução SOS)",
+                oils: [OILS_CATALOG.eucalipto, OILS_CATALOG.hortela],
+                actionName: "Ação Expectorante Imediata",
+                actionDesc: "Perfeita para crises de rinite, sinusite ou sensação de peito e nariz carregados. Abre as vias respiratórias rapidamente.",
+                recipe: "Inalação Direta SOS: pingue 1 gota de Eucalipto e 1 de Hortelã na palma das mãos, esfregue e inale profundamente em formato de concha até o alívio."
+            },
+            {
+                id: "imune_4",
+                title: "Sinergia 4 (Recuperação Imune)",
+                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.melaleuca],
+                actionName: "Ação Reparadora Noturna",
+                actionDesc: "Durante a noite o corpo mais consolida a imunidade. A Lavanda reduz o estresse (que derruba a imunidade) e a Melaleuca combate patógenos.",
+                recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo Vegetal de Coco com 3 gotas de Melaleuca e 3 de Lavanda. Aplique na sola dos pés antes de deitar."
+            },
+            {
+                id: "imune_5",
+                title: "Sinergia 5 (Acolhimento Respiratório)",
+                oils: [OILS_CATALOG.cedro, OILS_CATALOG.eucalipto],
+                actionName: "Ação Antisséptica Suave",
+                actionDesc: "O Cedro atua como um expectorante mucolítico excelente e traz suporte físico para fortalecer o sistema contra gripes prolongadas.",
+                recipe: "Massagem Torácica: Em 1 colher de sopa de óleo vegetal (ou creme neutro), misture 1 gota de Eucalipto e 2 gotas de Cedro e massageie o peito ao deitar."
             }
         ];
     } else if (user.mainComplaint === "energetico") {
@@ -263,24 +340,90 @@ export function getRecommendations(user: UserData) {
         synergies = [
             {
                 id: "aterramento_1",
-                title: "Sinergia 1 (Limpeza e Proteção)",
-                oils: [OILS_CATALOG.mirra, OILS_CATALOG.olibano],
-                actionName: "Ação Restauradora",
-                actionDesc: "Duas das resinas mais antigas e estudadas do mundo, atuam curando o desgaste emocional profundo e blindando o ambiente."
+                title: "Sinergia 1 (Âncora Matinal)",
+                oils: [OILS_CATALOG.cedro, OILS_CATALOG.laranja],
+                actionName: "Ação de Segurança e Leveza",
+                actionDesc: "O Cedro traz a força da madeira, aterrando o corpo fisicamente. A Laranja tira o peso da rotina e traz energia vital luminosa.",
+                recipe: "Banho de Descarrego Matinal: Pingue 2 gotas de Cedro e 1 de Laranja no piso do box no banho quente para entrar no dia com firmeza."
             },
             {
                 id: "aterramento_2",
-                title: "Sinergia 2 (Paz Interior e Modulação)",
-                oils: [OILS_CATALOG.olibano, OILS_CATALOG.lavanda],
-                actionName: "Ação Calmante",
-                actionDesc: "O Olíbano aterra e traz presença, enquanto a Lavanda dissolve a tensão. Ideal para meditação ou fim de tarde."
+                title: "Sinergia 2 (Limpeza e Proteção Ambiental)",
+                oils: [OILS_CATALOG.mirra, OILS_CATALOG.olibano],
+                actionName: "Ação Purificadora e Restauradora",
+                actionDesc: "Resinas milenares que atuam curando as emoções. Essenciais para blindar o seu ambiente de trabalho contra intrusões energéticas.",
+                recipe: "No difusor de ambiente: misture 3 gotas de Mirra e 3 gotas de Olíbano. Deixe ligado em momentos onde a tensão do ambiente fica mais pesada."
             },
             {
                 id: "aterramento_3",
-                title: "Sinergia 3 (Estrutura e Acolhimento)",
-                oils: [OILS_CATALOG.cedro, OILS_CATALOG.laranja],
-                actionName: "Ação de Força",
-                actionDesc: "O Cedro traz a força e a estabilidade da madeira (aterramento físico), enquanto a Laranja adoça o ambiente, tirando o peso da rotina."
+                title: "Sinergia 3 (Check-in Mental / Respiro Diurno)",
+                oils: [OILS_CATALOG.olibano, OILS_CATALOG.bergamota],
+                actionName: "Ação Moduladora Rápida",
+                actionDesc: "Quando o peso do dia causar exaustão emocional ou crises de respiração curta, essa sinergia religa a mente ao corpo.",
+                recipe: "Inalação Rápida SOS: pingue 1 gota de Olíbano e 1 de Bergamota na palma das mãos, esfregue e inale profundamente por 2 minutos."
+            },
+            {
+                id: "aterramento_4",
+                title: "Sinergia 4 (Desconexão Noturna)",
+                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.cedro],
+                actionName: "Ação Calmante Estrutural",
+                actionDesc: "Auxilia a transição da produtividade para o descanso. Dissolve a tenção muscular e prepara a mente para desligar de vez.",
+                recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo de Coco Fracionado com 3 gotas de Lavanda e 2 de Cedro. Aplique nos pulsos e sola dos pés às 19h."
+            },
+            {
+                id: "aterramento_5",
+                title: "Sinergia 5 (Paz Interior para o Sono)",
+                oils: [OILS_CATALOG.olibano, OILS_CATALOG.lavanda],
+                actionName: "Ação Meditativa e Sedativa",
+                actionDesc: "Induz estados de ondas cerebrais profundas. O Olíbano desliga a tagarelice mental e a Lavanda convida o corpo ao repouso.",
+                recipe: "Spray de Travesseiro: Em 30ml de álcool de cereais com 20ml de água, misture 8 gotas de Lavanda e 4 de Olíbano. Borrife no travesseiro ao deitar."
+            }
+        ];
+    } else if (user.mainComplaint === "saude_mulher" || user.lifeGoal === "hormonal") {
+        protocolId = "saude_mulher";
+        diagnosisTitle = "Desequilíbrio Endócrino e Tensão Feminina";
+        diagnosisText = "O seu corpo está pedindo suporte para transições hormonais, como TPM, cólicas intensas ou menopausa. É fundamental utilizar óleos essenciais com composição rica em fitohormônios e ésteres relaxantes, que ajudam a simular ou equilibrar os receptores do corpo sem efeitos colaterais. O resultado é o resgate do conforto físico e emocional nas piores fases do ciclo. As suas sinergias indicadas são:";
+
+        synergies = [
+            {
+                id: "mulher_1",
+                title: "Sinergia 1 (Acolhimento Matinal e Humor)",
+                oils: [OILS_CATALOG.bergamota, OILS_CATALOG.geranio],
+                actionName: "Ação Antidepressiva Diária",
+                actionDesc: "O Gerânio modula emoções flutuantes típicas dos ciclos, enquanto a Bergamota traz leveza e afasta a irritabilidade ao acordar.",
+                recipe: "Banho Matinal: Pingue 2 gotas de Bergamota e 1 gota de Gerânio no piso do box durante o banho quente para regular o humor do dia."
+            },
+            {
+                id: "mulher_2",
+                title: "Sinergia 2 (Controle de Oscilações)",
+                oils: [OILS_CATALOG.geranio, OILS_CATALOG.lavanda],
+                actionName: "Ação Estabilizadora de Receptores",
+                actionDesc: "Ajuda o corpo a entender e simular suporte estrogênico e acalmar o sistema nervoso central contra episódios de raiva/choro.",
+                recipe: "No difusor de ambiente: pingue 4 gotas de Lavanda e 3 de Gerânio. Use durante o dia ou final de tarde em momentos críticos da fase lútea/menopausa."
+            },
+            {
+                id: "mulher_3",
+                title: "Sinergia 3 (Alívio de Cólicas / SOS Pélvico)",
+                oils: [OILS_CATALOG.salvia, OILS_CATALOG.lavanda],
+                actionName: "Ação Antiespasmódica e Analgésica",
+                actionDesc: "A Sálvia Esclareia é a rainha do equilíbrio endócrino e relaxa a musculatura do útero, com forte propriedade antiespasmódica.",
+                recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo Vegetal com 3 gotas de Sálvia e 2 de Lavanda. Massageie diretamente no baixo ventre e lombar 2x ao dia."
+            },
+            {
+                id: "mulher_4",
+                title: "Sinergia 4 (Fogachos e Resgate da Autoestima)",
+                oils: [OILS_CATALOG.ylang, OILS_CATALOG.hortela],
+                actionName: "Ação Fito-hormonal e Termorreguladora",
+                actionDesc: "O Ylang Ylang ajuda a resgatar a libido e autoestima. A Hortelã atua no sistema de forma refrescante, excelente para ondas de calor severas.",
+                recipe: "Inalação Rápida SOS: pingue 1 gota de Ylang Ylang e 1 de Hortelã na palma das mãos (ou no colar aromático), esfregue e inale profundamente na crise."
+            },
+            {
+                id: "mulher_5",
+                title: "Sinergia 5 (Sono Fluido Sem Tensão)",
+                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.salvia],
+                actionName: "Ação Sedativa do Sistema Misto",
+                actionDesc: "Desliga a hiperatividade noturna que frequentemente ocorre nos períodos de transição ou pré-menstruação, promovendo sono de alto reparo.",
+                recipe: "Spray de Travesseiro: Em 30ml de álcool de cereais com 20ml de água, misture 8 gotas de Lavanda e 4 de Sálvia Esclareia. Borrife no ambiente ao deitar."
             }
         ];
     } else {
@@ -292,24 +435,43 @@ export function getRecommendations(user: UserData) {
         synergies = [
             {
                 id: "ansiedade_1",
-                title: "Sinergia 1 (Ansiolítica Clássica)",
-                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.laranja],
-                actionName: "Ação Rápida",
-                actionDesc: "A Lavanda acalma o sistema nervoso central enquanto a Laranja Doce traz conforto emocional imediato."
+                title: "Sinergia 1 (Despertar com Leveza)",
+                oils: [OILS_CATALOG.laranja, OILS_CATALOG.lavanda],
+                actionName: "Ação de Positividade Matinal",
+                actionDesc: "Reduz a taquicardia ou angústia ao acordar. A Laranja Doce traz alegria e conforto, enquanto a Lavanda previne os picos de cortisol matinais.",
+                recipe: "Banho Relaxante: Pingue 2 gotas de Laranja Doce e 1 gota de Lavanda no piso do box do banheiro na hora do banho quente da manhã."
             },
             {
                 id: "ansiedade_2",
-                title: "Sinergia 2 (Indução ao Sono Profundo)",
-                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.camomila],
-                actionName: "Ação Sedativa",
-                actionDesc: "Ideal para quem sofre de insônia severa e não consegue desligar os pensamentos na hora de deitar."
+                title: "Sinergia 2 (Escudo Diário Antiestresse)",
+                oils: [OILS_CATALOG.bergamota, OILS_CATALOG.lavanda],
+                actionName: "Ação Moduladora Diurna",
+                actionDesc: "Estabiliza o humor e reduz a produção de cortisol induzida pelo estresse, criando uma redoma de proteção emocional duradoura.",
+                recipe: "No difusor de ambiente: pingue 4 gotas de Bergamota e 4 gotas de Lavanda. Use na sala ou escritório durante suas tarefas."
             },
             {
                 id: "ansiedade_3",
-                title: "Sinergia 3 (Resgate Emocional)",
+                title: "Sinergia 3 (Resgate Rápido SOS de Pânico)",
                 oils: [OILS_CATALOG.bergamota, OILS_CATALOG.ylang],
-                actionName: "Ação Moduladora",
-                actionDesc: "Perfeita para momentos de angústia, taquicardia ou sensação de aperto no peito, atuando como um estabilizador natural."
+                actionName: "Ação Ansiolítica de Resgate",
+                actionDesc: "Manda uma mensagem química quase instantânea para a amígdala cerebral (centro do medo) e modula os batimentos cardíacos agitados.",
+                recipe: "Inalação SOS: Em crise, pingue 1 gota de Bergamota e 1 gota de Ylang na palma das mãos, esfregue e inale em concha de 3 a 5 minutos profundamente."
+            },
+            {
+                id: "ansiedade_4",
+                title: "Sinergia 4 (Botão de Desligar do Estresse)",
+                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.camomila],
+                actionName: "Ação Miorrelaxante (Tensão Acumulada)",
+                actionDesc: "Ideal para quando a ansiedade trava os ombros, nuca e mandíbula. Atua soltando a musculatura no fim da tarde/início da noite.",
+                recipe: "Massagem (Roll-on 10ml): Misture 10ml de Óleo de Coco Fracionado com 3 gotas de Lavanda e 2 de Camomila. Aplique na nuca e ombros às 19h."
+            },
+            {
+                id: "ansiedade_5",
+                title: "Sinergia 5 (Indução Farmacológica Natural ao Sono)",
+                oils: [OILS_CATALOG.lavanda, OILS_CATALOG.camomila],
+                actionName: "Ação Sedativa Intensa",
+                actionDesc: "Para quem não consegue silenciar a tagarelice mental. Prepara o cérebro fisiologicamente para repouso sem efeitos sedativos perigosos.",
+                recipe: "Spray de Travesseiro: Em 30ml de álcool de cereais com 20ml de água, misture 10 gotas de Lavanda e 5 de Camomila. Borrife no ambiente minutos antes de deitar."
             }
         ];
     }

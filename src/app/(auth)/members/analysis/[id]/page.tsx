@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getRecommendations, type Oil } from "@/lib/recommendations";
 import Link from "next/link";
+import HabitTracker from "@/components/HabitTracker";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,15 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
     const recs = getRecommendations(user as any);
     const { primaryOil, secondaryOil, environmentOil, protocolId, diagnosisTitle, diagnosisText, synergies, alerts } = recs;
     const firstName = user.name?.split(' ')[0] ?? 'você';
+    const tx = user.transactions[0];
+
+    // Extrair apenas os óleos únicos recomendados nas sinergias do usuário
+    const uniqueOils = Object.values(synergies.reduce((acc, current) => {
+        current.oils.forEach(oil => {
+            acc[oil.name] = oil;
+        });
+        return acc;
+    }, {} as Record<string, Oil>));
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-stone-50 p-4 md:p-8 text-stone-800 font-sans">
@@ -94,20 +104,20 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
                             </div>
                         )}
 
-                        {/* 3 Sinergias */}
-                        <h3 className="text-xl font-bold text-stone-800 mb-6">As suas 3 Sinergias Exclusivas 🌿</h3>
+                        {/* 5 Sinergias */}
+                        <h3 className="text-xl font-bold text-stone-800 mb-6">As suas 5 Rotinas Aromáticas 🌿</h3>
                         <div className="space-y-6">
                             {synergies.map((synergy, idx) => (
-                                <div key={synergy.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-6">
+                                <div key={synergy.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-6 shadow-sm">
                                     <div className="flex items-start justify-between gap-4 mb-4">
                                         <div>
                                             <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Sinergia {idx + 1}</span>
-                                            <h4 className="text-lg font-bold text-stone-900 mt-1">{synergy.title.replace(/Sinergia \d+ \(/, '').replace(')', '')}</h4>
+                                            <h4 className="text-lg font-bold text-stone-900 mt-1">{synergy.title.replace(/Sinergia \d+ \(|Sinergia \d+ \(|Sinergia \d+ /, '').replace(')', '')}</h4>
                                         </div>
                                         <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 border border-emerald-200">{synergy.actionName}</span>
                                     </div>
 
-                                    <div className="flex flex-wrap gap-3 mb-4">
+                                    <div className="flex flex-wrap gap-3 mb-5">
                                         {synergy.oils.map((oil: Oil) => (
                                             <a key={oil.name} href={oil.shopeeLink} target="_blank" rel="noopener noreferrer"
                                                 className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition hover:shadow-md ${oil.colorClass}`}>
@@ -117,9 +127,19 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
                                         ))}
                                     </div>
 
-                                    <p className="text-stone-600 text-sm leading-relaxed bg-white rounded-xl p-4 border border-stone-200">
-                                        💡 <strong>Por quê funciona:</strong> {synergy.actionDesc}
-                                    </p>
+                                    <div className="bg-white rounded-xl p-5 border border-stone-200 space-y-3">
+                                        <p className="text-stone-700 text-sm leading-relaxed">
+                                            💡 <strong>Por que funciona:</strong> {synergy.actionDesc}
+                                        </p>
+                                        {synergy.recipe && (
+                                            <div className="pt-3 border-t border-stone-100">
+                                                <p className="text-emerald-800 text-sm font-medium leading-relaxed flex items-start gap-2">
+                                                    <span className="text-lg mt-0.5">🧪</span>
+                                                    <span><strong>Receita e Uso:</strong> {synergy.recipe}</span>
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -291,20 +311,17 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
                         Adquira os seus óleos 100% puros nos links abaixo:
                     </p>
 
-                    <h3 className="font-bold text-stone-800 text-xl mb-4 mt-8">🌿 Os Essenciais (Destaques)</h3>
+                    <h3 className="font-bold text-stone-800 text-xl mb-4 mt-8">🌿 A Sua Farmácia Natural (Carrinho Rápido)</h3>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-                        <AffiliateCard title="Lavanda" subt="Relaxamento" emoji="🌿" link="https://shopee.com.br/search?keyword=oleo%20essencial%20lavanda%20via%20aroma" />
-                        <AffiliateCard title="Laranja Doce" subt="Alegria/Calma" emoji="🍊" link="https://shopee.com.br/search?keyword=oleo%20essencial%20laranja%20doce%20via%20aroma" />
-                        <AffiliateCard title="Alecrim" subt="Foco/Memória" emoji="🌿" link="https://shopee.com.br/search?keyword=oleo%20essencial%20alecrim%20via%20aroma" />
-                        <AffiliateCard title="Hortelã-Pimenta" subt="Energia" emoji="🌱" link="https://shopee.com.br/search?keyword=oleo%20essencial%20hortela%20pimenta%20via%20aroma" />
-                    </div>
-
-                    <h3 className="font-bold text-stone-800 text-xl mb-4 mt-10">🍃 Purificação e Resinas</h3>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-                        <AffiliateCard title="Melaleuca / Tea Tree" subt="Imunidade" emoji="🍃" link="https://shopee.com.br/search?keyword=oleo%20essencial%20melaleuca%20via%20aroma" />
-                        <AffiliateCard title="Eucalipto" subt="Respiração" emoji="🌳" link="https://shopee.com.br/search?keyword=oleo%20essencial%20eucalipto%20via%20aroma" />
-                        <AffiliateCard title="Mirra" subt="Aterramento" emoji="🪵" link="https://shopee.com.br/search?keyword=oleo%20essencial%20mirra%20via%20aroma" />
-                        <AffiliateCard title="Olíbano" subt="Equilíbrio Emocional" emoji="🪵" link="https://shopee.com.br/search?keyword=oleo%20essencial%20olibano%20via%20aroma" />
+                        {uniqueOils.map((oil) => (
+                            <AffiliateCard
+                                key={oil.name}
+                                title={oil.name}
+                                subt={oil.benefit}
+                                emoji="🌱"
+                                link={oil.shopeeLink}
+                            />
+                        ))}
                     </div>
 
                     <h3 className="font-bold text-stone-800 text-xl mb-4 mt-10">🛠️ Acessórios Recomendados</h3>
@@ -314,6 +331,8 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
                         <AffiliateCard title="Kit Frascos Roll-on" subt="Para levar na mala" emoji="🧴" link="https://shopee.com.br/search?keyword=frasco%20roll%20on%20vidro" />
                     </div>
                 </div>
+
+                <HabitTracker txId={tx.id} initialDays={(tx as any).trackedDays || []} />
 
                 {/* ─── UPSELL: NOVA ANÁLISE COM 50% DE DESCONTO ─── */}
                 <div className="rounded-2xl overflow-hidden shadow-xl border border-emerald-200">

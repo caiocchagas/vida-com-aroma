@@ -37,5 +37,6 @@ model Transaction {
   paymentId     String?  @unique
   amount        Float
   status        String
+  trackedDays   Int[]    @default([])
   createdAt     DateTime @default(now())
 }
