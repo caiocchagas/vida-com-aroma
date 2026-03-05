@@ -15,7 +15,7 @@ function CheckoutContent() {
     const router = useRouter();
     const email = searchParams.get("email");
     const isReturning = searchParams.get("returning") === "true";
-    const PRICE = isReturning ? 0.50 : 1.00;
+    const PRICE = isReturning ? 10.00 : 19.90;
     const brickControllerRef = useRef<any>(null);
     const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const [brickStatus, setBrickStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -253,9 +253,9 @@ function CheckoutContent() {
                     <p className="text-emerald-200 text-sm">
                         Acesso Vitalício ·{" "}
                         {isReturning ? (
-                            <><s className="opacity-50">R$ 1,00</s> <strong className="text-yellow-300">R$ 0,50</strong></>
+                            <><s className="opacity-50">R$ 19,90</s> <strong className="text-yellow-300">R$ 10,00</strong></>
                         ) : (
-                            <>R$ 1,00</>
+                            <>R$ 19,90</>
                         )}
                         {" "}· Pagamento Único
                     </p>
