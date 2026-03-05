@@ -79,7 +79,7 @@ function CheckoutContent() {
                                 creditCard: "all",
                                 debitCard: "all",
                                 bankTransfer: "all",
-                                maxInstallments: 1,
+                                maxInstallments: 12,
                             },
                             visual: {
                                 style: {
