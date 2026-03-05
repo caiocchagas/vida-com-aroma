@@ -326,9 +326,9 @@ export default async function AnalysisPage({ params }: { params: { id: string } 
 
                     <h3 className="font-bold text-stone-800 text-xl mb-4 mt-10">🛠️ Acessórios Recomendados</h3>
                     <div className="grid gap-4 md:grid-cols-3">
-                        <AffiliateCard title="Óleo de Coco Fracionado" subt="Para diluição na pele" emoji="🥥" link="https://shopee.com.br/search?keyword=oleo%20carreador%20vegetal" />
-                        <AffiliateCard title="Difusor Ultrassônico" subt="Ambientes fechados" emoji="💨" link="https://shopee.com.br/search?keyword=difusor%20oleo%20essencial" />
-                        <AffiliateCard title="Kit Frascos Roll-on" subt="Para levar na mala" emoji="🧴" link="https://shopee.com.br/search?keyword=frasco%20roll%20on%20vidro" />
+                        <AffiliateCard title="Óleo de Coco Fracionado" subt="Para diluição na pele" emoji="🥥" link="https://shopee.com.br/search?keyword=oleo%20carreador%20vegetal&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h" />
+                        <AffiliateCard title="Difusor Ultrassônico" subt="Ambientes fechados" emoji="💨" link="https://shopee.com.br/search?keyword=difusor%20oleo%20essencial&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h" />
+                        <AffiliateCard title="Kit Frascos Roll-on" subt="Para levar na mala" emoji="🧴" link="https://shopee.com.br/search?keyword=frasco%20roll%20on%20vidro&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h" />
                     </div>
                 </div>
 

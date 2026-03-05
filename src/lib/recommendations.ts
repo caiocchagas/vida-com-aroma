@@ -26,7 +26,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-purple-100 text-purple-800 border-purple-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20lavanda%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20lavanda%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     laranja: {
         name: "Laranja Doce",
@@ -35,7 +35,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-orange-100 text-orange-800 border-orange-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20laranja%20doce%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20laranja%20doce%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     camomila: {
         name: "Camomila Romana",
@@ -44,7 +44,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20camomila%20romana%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20camomila%20romana%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     bergamota: {
         name: "Bergamota LFC",
@@ -53,7 +53,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-lime-100 text-lime-800 border-lime-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20bergamota%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20bergamota%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     ylang: {
         name: "Ylang Ylang",
@@ -62,7 +62,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-pink-100 text-pink-800 border-pink-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20ylang%20ylang%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20ylang%20ylang%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     alecrim: {
         name: "Alecrim",
@@ -71,7 +71,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20alecrim%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20alecrim%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     hortela: {
         name: "Hortelã-Pimenta",
@@ -80,7 +80,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-cyan-100 text-cyan-800 border-cyan-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20hortela%20pimenta%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20hortela%20pimenta%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     limao: {
         name: "Limão Siciliano",
@@ -89,7 +89,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20limao%20siciliano%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20limao%20siciliano%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     capim_limao: {
         name: "Capim-Limão (Lemongrass)",
@@ -98,7 +98,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-green-100 text-green-800 border-green-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20lemongrass%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20lemongrass%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     melaleuca: {
         name: "Melaleuca (Tea Tree)",
@@ -107,7 +107,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-teal-100 text-teal-800 border-teal-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20melaleuca%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20melaleuca%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     eucalipto: {
         name: "Eucalipto Globulus",
@@ -116,7 +116,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-blue-100 text-blue-800 border-blue-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20eucalipto%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20eucalipto%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     mirra: {
         name: "Mirra",
@@ -125,7 +125,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-stone-200 text-stone-800 border-stone-300",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20mirra%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20mirra%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     olibano: {
         name: "Olíbano (Frankincense)",
@@ -134,7 +134,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-amber-100 text-amber-800 border-amber-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20olibano%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20olibano%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     cedro: {
         name: "Cedro Virgínia",
@@ -143,7 +143,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-orange-50 text-orange-900 border-orange-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20cedro%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20cedro%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     geranio: {
         name: "Gerânio Bourbon",
@@ -152,7 +152,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-rose-100 text-rose-800 border-rose-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20geranio%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20geranio%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     },
     salvia: {
         name: "Sálvia Esclareia",
@@ -161,7 +161,7 @@ const OILS_CATALOG: Record<string, Oil> = {
         description: "",
         ritual: "",
         colorClass: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200",
-        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20salvia%20esclareia%20via%20aroma",
+        shopeeLink: "https://shopee.com.br/search?keyword=oleo%20essencial%20salvia%20esclareia%20via%20aroma&mmp_pid=an_18369290054&uls_trackid=5536nk6p0028&utm_campaign=id_VcjjqHWqCj&utm_content=----&utm_medium=affiliates&utm_source=an_18369290054&utm_term=ej44je7cre3h",
     }
 };
 
