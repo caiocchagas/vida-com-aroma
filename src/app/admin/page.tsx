@@ -14,8 +14,16 @@ export default async function AdminPage() {
         redirect("/admin/login");
     }
 
-    // Fetch KPIs and data
-    const [totalLeads, totalPaid, recentLeads, transactions] = await Promise.all([
+    const [
+        totalLeads,
+        totalPaid,
+        recentLeads,
+        transactions,
+        pageviews,
+        quizStarts,
+        quizCompletes,
+        checkoutViews
+    ] = await Promise.all([
         prisma.user.count(),
         prisma.user.count({ where: { hasPaid: true } }),
         prisma.user.findMany({
@@ -38,10 +46,18 @@ export default async function AdminPage() {
                 user: { select: { email: true } },
             },
         }),
-    ]);
+        // @ts-ignore
+        prisma.event.count({ where: { name: "pageview_home" } }),
+        // @ts-ignore
+        prisma.event.count({ where: { name: "quiz_start" } }),
+        // @ts-ignore
+        prisma.event.count({ where: { name: "quiz_complete" } }),
+        // @ts-ignore
+        prisma.event.count({ where: { name: "checkout_view" } }),
+    ]) as any[];
 
     const conversionRate = totalLeads > 0 ? ((totalPaid / totalLeads) * 100).toFixed(1) : "0.0";
-    const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
+    const totalRevenue = transactions.reduce((sum: number, t: any) => sum + t.amount, 0);
 
     return (
         <main className="min-h-screen bg-stone-950 text-stone-100 p-6 font-sans">
@@ -69,13 +85,29 @@ export default async function AdminPage() {
                 </div>
             </div>
 
-            {/* KPI Cards */}
+            {/* Funnel KPI Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                {[
+                    { label: "Visitas na Home", value: pageviews.toString(), icon: "👀", color: "border-blue-700" },
+                    { label: "Iniciaram o Quiz", value: quizStarts.toString(), icon: "📝", color: "border-purple-600" },
+                    { label: "Finalizaram o Quiz", value: quizCompletes.toString(), icon: "✅", color: "border-pink-500" },
+                    { label: "Chegaram no Checkout", value: checkoutViews.toString(), icon: "🛒", color: "border-orange-500" },
+                ].map((kpi) => (
+                    <div key={kpi.label} className={`rounded-2xl bg-stone-900 border-l-4 ${kpi.color} p-6 border border-stone-800`}>
+                        <div className="text-2xl mb-2">{kpi.icon}</div>
+                        <div className="text-3xl font-black text-white">{kpi.value}</div>
+                        <div className="text-sm text-stone-400 mt-1">{kpi.label}</div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Sales KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                 {[
-                    { label: "Total de Leads", value: totalLeads.toString(), icon: "🧑‍💻", color: "border-blue-700" },
+                    { label: "Total de Leads (DB)", value: totalLeads.toString(), icon: "🧑‍💻", color: "border-zinc-700" },
                     { label: "Clientes Pagantes", value: totalPaid.toString(), icon: "💳", color: "border-emerald-600" },
                     { label: "Taxa de Conversão", value: `${conversionRate}%`, icon: "📈", color: "border-amber-500" },
-                    { label: "Receita Total (R$)", value: `${totalRevenue.toFixed(2)}`, icon: "💰", color: "border-orange-500" },
+                    { label: "Receita Total (R$)", value: `${totalRevenue.toFixed(2)}`, icon: "💰", color: "border-indigo-500" },
                 ].map((kpi) => (
                     <div key={kpi.label} className={`rounded-2xl bg-stone-900 border-l-4 ${kpi.color} p-6 border border-stone-800`}>
                         <div className="text-2xl mb-2">{kpi.icon}</div>
@@ -109,7 +141,7 @@ export default async function AdminPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {recentLeads.map((lead, i) => (
+                                {recentLeads.map((lead: any, i: number) => (
                                     <tr
                                         key={lead.email}
                                         className={`border-b border-stone-800/50 hover:bg-stone-800/40 transition ${i % 2 === 0 ? "" : "bg-stone-900/50"}`}
@@ -174,7 +206,7 @@ export default async function AdminPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactions.map((t, i) => (
+                                {transactions.map((t: any, i: number) => (
                                     <tr
                                         key={t.id}
                                         className={`border-b border-stone-800/50 hover:bg-stone-800/40 transition ${i % 2 === 0 ? "" : "bg-stone-900/50"}`}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "@/lib/tracking";
 
 // Tipagem para os 6 passos clínicos
 type QuizAnswers = {
@@ -59,12 +60,24 @@ export default function ClinicalQuizPage() {
     });
   };
 
+  useEffect(() => {
+    trackEvent("pageview_home");
+  }, []);
+
   const nextStep = () => {
-    if (step < 7) setStep(step + 1);
-    else setStep(8); // Passo 8 é o formulário de Email
+    if (step < 7) {
+      setStep(step + 1);
+      trackEvent(`quiz_step_${step + 1}`);
+    } else {
+      setStep(8); // Passo 8 é o formulário de Email
+      trackEvent("quiz_complete");
+    }
   };
 
-  const startQuiz = () => setStep(1);
+  const startQuiz = () => {
+    setStep(1);
+    trackEvent("quiz_start");
+  };
 
   // Submissão do Lead
   const handleSubmitLead = async (e: React.FormEvent) => {

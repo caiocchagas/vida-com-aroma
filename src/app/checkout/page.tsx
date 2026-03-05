@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
+import { trackEvent } from "@/lib/tracking";
 
 interface PixData {
     paymentId: string;
@@ -57,6 +58,8 @@ function CheckoutContent() {
     }, []);
 
     useEffect(() => {
+        trackEvent("checkout_view", { email, isReturning });
+
         if (!email) {
             router.push("/");
             return;
