@@ -6,6 +6,22 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
+        // -------------------------------------------------------------
+        // LOG EVERY PAYLOAD TO DATABASE TO DEBUG FUTURE FAILURES
+        // -------------------------------------------------------------
+        try {
+            // @ts-ignore
+            await prisma.webhookLog.create({
+                data: {
+                    source: "mercadopago",
+                    event: body.type || body.topic || "unknown",
+                    payload: JSON.stringify(body, null, 2),
+                }
+            });
+        } catch (logErr) {
+            console.error("Erro ao salvar WebhookLog no BD:", logErr);
+        }
+
         // O Mercado Pago manda o tipo de notificação
         const topic = body.type || body.topic;
         const dataId = body.data?.id || body.resource;

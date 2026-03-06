@@ -48,3 +48,11 @@ model Event {
   metadata  String?
   createdAt DateTime @default(now())
 }
+
+model WebhookLog {
+  id        String   @id @default(uuid())
+  source    String   // e.g., "mercadopago"
+  event     String   // e.g., "payment.created", "payment.updated"
+  payload   String   // The entire raw JSON stringified
+  createdAt DateTime @default(now())
+}
