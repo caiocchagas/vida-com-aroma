@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
 
         const payment = new Payment(client);
 
+        const origin = req.headers.get("origin") || "https://vida-com-aroma.vercel.app";
+
         const paymentBody: any = {
             payment_method_id,
             transaction_amount: Number(transaction_amount) || 19.90,
@@ -42,6 +44,7 @@ export async function POST(req: NextRequest) {
             metadata: {
                 user_email: userEmail,
             },
+            notification_url: `${origin}/api/webhook/mercadopago`,
         };
 
         // Cartão: adiciona token, issuer_id e parcelas
