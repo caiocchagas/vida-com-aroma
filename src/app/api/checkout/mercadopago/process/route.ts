@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
         const payment = new Payment(client);
 
-        const origin = req.headers.get("origin") || "https://vida-com-aroma.vercel.app";
+        // IMPORTANTE: URL fixada para producao para garantir webhooks de PIX
 
         const paymentBody: any = {
             payment_method_id,
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
             metadata: {
                 user_email: userEmail,
             },
-            notification_url: `${origin}/api/webhook/mercadopago`,
+            notification_url: "https://vida-com-aroma.vercel.app/api/webhook/mercadopago",
         };
 
         // Cartão: adiciona token, issuer_id e parcelas
